@@ -14,12 +14,36 @@ jest.mock("next/navigation", () => ({
 }));
 
 // ✅ Mock Next.js App Router API (e.g., `NextResponse` and `NextRequest`)
-jest.mock("next/server", () => ({
-    NextResponse: {
-        json: jest.fn((data: Record<string, any>) => ({ json: () => data })),
-    },
-    NextRequest: jest.fn(),
-}));
+jest.mock("next/server", () => {
+    class MockNextResponse {
+        status: number;
+        headers: Headers;
+        body: any;
+
+        constructor(body: any, init: { status?: number; headers?: Record<string, string> } = {}) {
+            this.body = body;
+            this.status = init.status || 200;
+            this.headers = new Headers(init.headers); // ✅ Properly set headers
+        }
+
+
+        async json() {
+            return this.body; // ✅ Return as object (not string)
+        }
+
+        static json(data: any, init?: { status: number }) {
+            return new MockNextResponse(data, init); // ✅ No JSON.stringify()
+        }
+    }
+
+    return {
+        NextResponse: MockNextResponse,
+        NextRequest: jest.fn(),
+    };
+});
+
+
+
 
 // ✅ Mock `next-seo` to prevent unnecessary errors in tests
 jest.mock("next-seo", () => ({

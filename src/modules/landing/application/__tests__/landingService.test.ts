@@ -1,45 +1,60 @@
 import { LandingService } from "@/modules/landing/application/landingService";
 import { LandingRepository } from "@/modules/landing/infrastructure/landingRepository";
+import { dummyLandingData } from "@/modules/landing/infrastructure/landingDumyData";
+import { LandingContent } from "@/modules/landing/domain/landingModel";
 
-jest.mock("@/modules/landing/infrastructure/LandingRepository");
+jest.mock("@/modules/landing/infrastructure/landingRepository");
 
 describe("LandingService", () => {
-    let landingRepositoryMock: jest.Mocked<LandingRepository>;
     let landingService: LandingService;
+    let landingRepositoryMock: jest.Mocked<LandingRepository>;
 
     beforeEach(() => {
         landingRepositoryMock = new LandingRepository() as jest.Mocked<LandingRepository>;
         landingService = new LandingService(landingRepositoryMock);
+        jest.clearAllMocks();
     });
 
-    // ✅ Positive Case: Should return landing data when repository succeeds
-    it("should return landing data when repository returns content", async () => {
-        // 🛠️ Arrange
+    it("✅ should return landing data from repository", async () => {
         const mockData = {
-            title: "Mock Title",
-            description: "Mock Description",
-            features: ["Feature A", "Feature B"],
-            imageUrl: "https://mockwebsite.com/mock-image.jpg", // ✅ Add missing property
+            data: dummyLandingData,
+            status: 200,
         };
-        landingRepositoryMock.getLandingContent.mockReturnValue(mockData);
 
-        // 🎯 Act
+        landingRepositoryMock.getLandingContent.mockResolvedValue(mockData);
+
         const result = await landingService.getLandingData();
 
-        // ✅ Assert
         expect(result).toEqual(mockData);
         expect(landingRepositoryMock.getLandingContent).toHaveBeenCalledTimes(1);
     });
 
-    // ❌ Negative Case: Should handle error when repository fails
-    it("should throw an error when repository fails", async () => {
-        // 🛠️ Arrange
-        landingRepositoryMock.getLandingContent.mockImplementation(() => {
-            throw new Error("Repository error");
+    it("⚠️ should return standardized error response if repository fails", async () => {
+        const mockErrorResponse = {
+            data: null,
+            error: "Failed to fetch",
+            status: 500,
+        };
+
+        landingRepositoryMock.getLandingContent.mockResolvedValue(mockErrorResponse);
+
+        const result = await landingService.getLandingData();
+
+        expect(result).toEqual(mockErrorResponse);
+        expect(landingRepositoryMock.getLandingContent).toHaveBeenCalledTimes(1);
+    });
+
+    it("⚠️ should return internal server error if an unexpected error occurs", async () => {
+        landingRepositoryMock.getLandingContent.mockRejectedValue(new Error("Unexpected Error"));
+
+        const result = await landingService.getLandingData();
+
+        expect(result).toEqual({
+            data: null,
+            error: "Internal Server Error",
+            status: 500,
         });
 
-        // 🎯 Act & ✅ Assert
-        await expect(landingService.getLandingData()).rejects.toThrow("Repository error");
         expect(landingRepositoryMock.getLandingContent).toHaveBeenCalledTimes(1);
     });
 });

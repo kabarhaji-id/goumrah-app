@@ -1,17 +1,25 @@
-import { LandingContent } from "@/modules/landing/domain/landingModel";
 import { LandingRepository } from "@/modules/landing/infrastructure/landingRepository";
 
 export class LandingService {
-    private landingRepository: LandingRepository;
+    private repository: LandingRepository;
 
-    constructor(landingRepository: LandingRepository) {
-        this.landingRepository = landingRepository;
+    constructor(repository: LandingRepository) {
+        this.repository = repository;
     }
 
-    async getLandingData(): Promise<LandingContent> {
-        console.log("🔍 Memanggil repository untuk mendapatkan data landing...");
-        const data = await this.landingRepository.getLandingContent();
-        console.log("✅ Data berhasil diperoleh dari repository:", data);
-        return data;
+    async getLandingData() {
+        try {
+            const response = await this.repository.getLandingContent();
+
+            // Jika sukses (status 200), kembalikan hanya `data` dan `status`
+            if (response.status === 200) {
+                return { data: response.data, status: response.status };
+            }
+
+            // Jika gagal, pastikan `error` tetap ada
+            return { data: null, error: response.error ?? "Unknown Error", status: response.status };
+        } catch (error) {
+            return { data: null, error: "Internal Server Error", status: 500 };
+        }
     }
 }

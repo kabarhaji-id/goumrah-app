@@ -1,64 +1,71 @@
 import { LandingRepository } from "@/modules/landing/infrastructure/landingRepository";
-import { LandingContent } from "@/modules/landing/domain/landingModel";
+import {dummyLandingData} from "@/modules/landing/infrastructure/landingDumyData";
+
+// ✅ Mock fetch API
+global.fetch = jest.fn();
 
 describe("LandingRepository", () => {
     let landingRepository: LandingRepository;
 
     beforeEach(() => {
-        // Arrange: Initialize LandingRepository before each test
         landingRepository = new LandingRepository();
+        jest.clearAllMocks(); // 🔄 Reset mock setiap test case
     });
 
-    describe("Positive Cases", () => {
-        it("should return the correct landing content", () => {
-            // Act: Call the method
-            const result: LandingContent = landingRepository.getLandingContent();
-
-            // Assert: Verify the returned data
-            expect(result).toEqual({
-                title: "Welcome to Our Platform",
-                description: "Experience the best services with our cutting-edge technology.",
-                imageUrl: "/images/hero.jpg",
-            });
+    /**
+     * ✅ Use Case Positif
+     * Jika API memberikan respons sukses, maka harus mengembalikan data yang diharapkan.
+     */
+    it("✅ should return landing data from API", async () => {
+        // **1️⃣ Arrange** - Setup data mock
+        const mockData = { title: "Test Title", description: "Test Description" };
+        (fetch as jest.Mock).mockResolvedValue({
+            ok: true,
+            json: jest.fn().mockResolvedValue(mockData),
         });
 
-        it("should return an object with valid properties", () => {
-            // Act
-            const result: LandingContent = landingRepository.getLandingContent();
+        // **2️⃣ Act** - Panggil fungsi yang akan dites
+        const result = await landingRepository.getLandingContent();
 
-            // Assert: Ensure properties exist and are of the correct type
-            expect(result).toHaveProperty("title", expect.any(String));
-            expect(result).toHaveProperty("description", expect.any(String));
-            expect(result).toHaveProperty("imageUrl", expect.any(String));
-        });
+        // **3️⃣ Assert** - Periksa apakah hasilnya sesuai harapan
+        expect(result.data).toEqual(mockData);
+        expect(fetch).toHaveBeenCalledTimes(1);
     });
 
-    describe("Negative Cases", () => {
-        it("should return an object with non-empty values", () => {
-            // Act
-            const result: LandingContent = landingRepository.getLandingContent();
-
-            // Assert: Ensure that values are not empty strings
-            expect(result.title).not.toBe("");
-            expect(result.description).not.toBe("");
-            expect(result.imageUrl).not.toBe("");
+    /**
+     * ❌ Use Case Negatif
+     * Jika API gagal (misalnya, error 404), maka harus mengembalikan dummy data.
+     */
+    it("⚠️ should return dummy data if API fails", async () => {
+        // **1️⃣ Arrange** - Setup fetch untuk gagal
+        (fetch as jest.Mock).mockResolvedValue({
+            ok: false,
+            status: 404,
+            statusText: "Not Found",
         });
 
-        it("should not return null or undefined", () => {
-            // Act
-            const result: LandingContent = landingRepository.getLandingContent();
+        // **2️⃣ Act** - Panggil fungsi yang akan dites
+        const result = await landingRepository.getLandingContent();
 
-            // Assert
-            expect(result).not.toBeNull();
-            expect(result).not.toBeUndefined();
-        });
+        // **3️⃣ Assert** - Pastikan dummy data yang dikembalikan
+        expect(result.data).toEqual(dummyLandingData);
+        expect(fetch).toHaveBeenCalledTimes(1);
+    });
 
-        it("should not return unexpected values", () => {
-            // Act
-            const result: LandingContent = landingRepository.getLandingContent();
+    /**
+     * ❌ Use Case Negatif
+     * Jika API fetch mengalami error (misalnya, jaringan terputus), maka harus mengembalikan dummy data.
+     */
+    it("⚠️ should return dummy data if API request fails with an error", async () => {
+        // **1️⃣ Arrange** - Simulasi fetch yang melempar error
+        (fetch as jest.Mock).mockRejectedValue(new Error("Network Error"));
 
-            // Assert: Ensure it does not contain any unexpected properties
-            expect(result).not.toHaveProperty("invalidProperty");
-        });
+        // **2️⃣ Act** - Panggil fungsi
+        const result = await landingRepository.getLandingContent();
+
+        // **3️⃣ Assert** - Harus mengembalikan dummy data
+        expect(result.data).toEqual(dummyLandingData)
+        expect(fetch).toHaveBeenCalledTimes(1);
     });
 });
+
