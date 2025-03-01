@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { LogIn, Menu, X } from 'lucide-react';
 import LogoDark from "@/public/icons/light-logo.svg";
 import { usePathname } from "next/navigation";
-import BottomNavigation from "@/sections/landing/components/mobile/MobileMenu";
+import BottomNavigation from "@/sections/landing/components/molecules/MobileMenu";
 import Link from "next/link";
 
 interface NavigationItem {

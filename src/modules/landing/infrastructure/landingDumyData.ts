@@ -272,13 +272,12 @@ export const dummyLandingData: LandingContent = {
             title: "Berangkat Umroh Bersama goumrah.id",
             subtitle: "Dapatkan Kelebihannya"
         },
-        title: "Mengapa Memilih Kami?",
         benefits: [
-            { title: "Pelayanan Terbaik", subtitle: "goumrah.id memberikan pelayanan pemesanan paket umroh dengan fasilitas terbaik untuk setiap jama’ah", logo: "/icons/pelayanan-terbaik.svg" },
-            { title: "Pemesanan Mudah", subtitle: "Kami berkomitmen memberikan kemudahan untuk setiap pemesanan paket umroh jama’ah dari awal hingga akhir.", logo: "/icons/pemesanan-mudah.svg" },
-            { title: "Biaya Transparan", subtitle: "Sering mendapatkan biaya tak terduga saat pesan paket umroh? disini tidak lagi! kami memberikan laporan biaya yang transparan. ", logo: "/icons/biaya-transparan.svg" },
-            { title: "Terpercaya", subtitle: "goumrah.id sudah berpengalaman 18 tahun memberangkatkan jama’ah ke Tanah Suci dan sudah berizin PPIU di Kemenag.", logo: "/icons/terpercaya.svg" },
-            { title: "Pembayaran Aman", subtitle: "goumrah.id sudah bekerjasama dengan platform pembayaran terpercaya di Indonesia, dan sudah berizin di OJK ataupun Bank Indonesia.", logo: "/icons/pembayaran-aman.svg" },
+            { id : 1, title: "Pelayanan Terbaik", subtitle: "goumrah.id memberikan pelayanan pemesanan paket umroh dengan fasilitas terbaik untuk setiap jama’ah", logo: "/icons/pelayanan-terbaik.svg" },
+            { id : 2, title: "Pemesanan Mudah", subtitle: "Kami berkomitmen memberikan kemudahan untuk setiap pemesanan paket umroh jama’ah dari awal hingga akhir.", logo: "/icons/pemesanan-mudah.svg" },
+            { id : 3,  title: "Biaya Transparan", subtitle: "Sering mendapatkan biaya tak terduga saat pesan paket umroh? disini tidak lagi! kami memberikan laporan biaya yang transparan. ", logo: "/icons/biaya-transparan.svg" },
+            { id : 4,  title: "Terpercaya", subtitle: "goumrah.id sudah berpengalaman 18 tahun memberangkatkan jama’ah ke Tanah Suci dan sudah berizin PPIU di Kemenag.", logo: "/icons/terpercaya.svg" },
+            { id : 5,  title: "Pembayaran Aman", subtitle: "goumrah.id sudah bekerjasama dengan platform pembayaran terpercaya di Indonesia, dan sudah berizin di OJK ataupun Bank Indonesia.", logo: "/icons/pembayaran-aman.svg" },
         ],
         footerTitle : "Jadi, Tunggu apa lagi? Percayakan perjalanan Ibadah Umroh kamu bersama goumrah.id",
         buttonAbout: "Kenalan Yuk sama goumrah.id",

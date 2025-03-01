@@ -2,8 +2,9 @@
 
 import React from "react";
 import { useLanding } from "@/sections/landing/hooks/useLanding";
-import Navbar from "@/sections/landing/components/Navbar";
-import Hero from "@/sections/landing/components/Hero";
+import Navbar from "@/sections/landing/components/organisms/Navbar";
+import Hero from "@/sections/landing/components/organisms/Hero";
+import WhyChooseUs from "@/sections/landing/components/organisms/WhyChooseUs";
 
 export default function Home() {
     const { data, loading } = useLanding();
@@ -15,6 +16,7 @@ export default function Home() {
         <>
             <Navbar />
             <Hero {...data.heroContent} />
+            <WhyChooseUs {...data.featuresContent} />
         </>
     );
 }

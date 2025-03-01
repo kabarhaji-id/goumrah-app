@@ -16,7 +16,7 @@ export interface HeroContent {
     description: string;
     tagsLine: string;
     buttonLabel: string;
-    imageUrl: string;
+    imageUrl?: string | null;
     altText: string;
 }
 
@@ -48,7 +48,6 @@ export interface FAQ {
 // Features Section
 export interface FeaturesContent {
     header: SectionHeader;
-    title: string;
     benefits: Benefit[];
     footerTitle: string;
     buttonAbout: string;
@@ -56,6 +55,7 @@ export interface FeaturesContent {
 }
 
 export interface Benefit {
+    id: number;
     title: string;
     subtitle: string;
     logo: string;

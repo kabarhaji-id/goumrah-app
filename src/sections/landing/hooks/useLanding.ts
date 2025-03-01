@@ -1,26 +1,36 @@
-import { useEffect, useState } from "react";
-import { LandingRepository } from "@/modules/landing/infrastructure/landingRepository";
-import { LandingContent } from "@/modules/landing/domain/landingModel";
+import { useState, useEffect } from "react";
 
 export function useLanding() {
-    const [data, setData] = useState<LandingContent | null>(null);
+    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null); // Type-safe error state
 
     useEffect(() => {
-        async function fetchLandingData() {
-            const repository = new LandingRepository();
+        async function fetchData() {
             try {
-                const response = await repository.getLandingContent();
-                setData(response);
-            } catch (error) {
-                console.error("Error fetching landing data:", error);
+                const response = await fetch("/api/landing");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                setData(result.data);
+            } catch (err) {
+                let errorMessage = "Unknown error occurred";
+
+                if (err instanceof Error) {
+                    errorMessage = err.message;
+                }
+
+                console.error("Error fetching landing data:", errorMessage);
+                setError(errorMessage);
             } finally {
                 setLoading(false);
             }
         }
 
-        fetchLandingData();
+        fetchData();
     }, []);
 
-    return { data, loading };
+    return { data, loading, error };
 }

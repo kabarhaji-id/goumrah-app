@@ -1,0 +1,60 @@
+// Variables for Gradient Colors
+$color1: rgba(0, 38, 38, 1);
+$color2: rgba(11, 71, 71, 1);
+$color3: rgba(89, 130, 130, 1);
+$color4: rgba(162, 185, 185, 1);
+$color5: rgba(255, 255, 255, 1);
+
+.whyChooseUs {
+  padding: 4rem 1.5rem;
+  text-align: center;
+  color: white;
+  background: rgba(0, 38, 38, 1);
+
+  h2 {
+    font-size: 1.875rem; // text-3xl
+    font-weight: bold;
+    color: #2dd4bf; // Tailwind's text-teal-300
+  }
+
+  p {
+    font-style: italic;
+    color: #d1d5db; // Tailwind's text-gray-300
+    margin-top: 0.5rem;
+  }
+
+  .featuresGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .ctaTitle {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .ctaButtons {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+  }
+}

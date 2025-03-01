@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Image from "next/image";
 import {HeroContent} from "@/modules/landing/domain/landingModel";
-import {ImageErrorFallback} from "@/sections/landing/error/imageErrorFallback";
+import {ImageErrorFallback} from "@/sections/landing/components/atoms/imageErrorFallback";
 
 
 export default function Hero({title, description, tagsLine, buttonLabel, imageUrl, altText}: HeroContent) {
@@ -11,14 +11,7 @@ export default function Hero({title, description, tagsLine, buttonLabel, imageUr
         setError(false);
     };
 
-    if (error) {
-        return (<div className="w-full h-[300px] sm:h-[350px] lg:h-[411px] relative">
-            <ImageErrorFallback
-                message="Failed to load image. Please check your connection and try again."
-                retry={handleRetry}
-            />
-        </div>);
-    }
+    const validImageUrl = error || !imageUrl ? "/assets/image/no-image.png" : imageUrl;
 
 
     return (
@@ -27,17 +20,24 @@ export default function Hero({title, description, tagsLine, buttonLabel, imageUr
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center py-12">
                     {/* Image Section */}
                     <div className="w-full h-[300px] sm:h-[350px] lg:h-[411px] relative rounded-2xl overflow-hidden flex justify-center">
-                        <Image
-                            src={imageUrl}
-                            alt={altText}
-                            fill
-                            priority
-                            className="object-cover rounded-2xl transition-transform hover:scale-105 duration-700"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 50vw"
-                            quality={90}
-                            onError={() => setError(true)}
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                        />
+                        {error ? (
+                            <ImageErrorFallback
+                                message="Failed to load image. Please check your connection and try again."
+                                retry={handleRetry}
+                            />
+                        ) : (
+                            <Image
+                                src={validImageUrl} // ✅ Always a valid string
+                                alt={altText || "Default alternative text"}
+                                fill
+                                priority
+                                className="object-cover rounded-2xl transition-transform hover:scale-105 duration-700"
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 50vw"
+                                quality={90}
+                                onError={() => setError(true)}
+                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                            />
+                        )}
                     </div>
 
                     {/* Text Section */}

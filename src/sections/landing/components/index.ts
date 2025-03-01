@@ -1,2 +1,2 @@
-export { default as NavBarSection } from "./Navbar";
-export { default as HeroSection } from "./Hero";
+export { default as NavBarSection } from "./organisms/Navbar";
+export { default as HeroSection } from "./organisms/Hero";

@@ -10,7 +10,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         setMounted(true);
     }, []);
 
-    if (!mounted) return <div>{children}</div>; // ✅ Perbaikan: Bungkus dalam `<div>`, bukan fragment (`<>`)
+    if (!mounted) return null;
 
     return (
         <NextThemesProvider attribute="class" defaultTheme="light" storageKey="user-theme">
