@@ -3,9 +3,14 @@ import "moment/locale/id";
 
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import {DepartureDates} from "@/modules/landing/domain/landingModel";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
+}
+
+export function getDepartureDate(departureDates: DepartureDates[]): DepartureDates | undefined {
+    return departureDates.find((departure) => departure.status === "active") ?? departureDates[0];
 }
 
 // 🔹 Format harga ke Rupiah (bisa pilih simbol mata uang)
