@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import {LandingContent} from "@/modules/landing/domain/landingModel";
 
 export function useLanding() {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState<LandingContent | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null); // Type-safe error state
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -13,7 +14,7 @@ export function useLanding() {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                const result = await response.json();
+                const result: { data: LandingContent } = await response.json();
                 setData(result.data);
             } catch (err) {
                 let errorMessage = "Unknown error occurred";

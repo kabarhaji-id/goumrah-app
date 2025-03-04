@@ -1,5 +1,5 @@
 import { FeaturesContent } from "@/modules/landing/domain/landingModel";
-import { FeatureCard } from "@/sections/landing/components/atoms/feature-card";
+import { FeatureCard } from "@/sections/landing/components/molecules/feature-card";
 import { Button } from "@/sections/landing/components/templates/button";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
