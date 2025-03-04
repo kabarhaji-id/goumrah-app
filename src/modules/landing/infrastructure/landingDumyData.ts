@@ -6,6 +6,7 @@ export const dummyLandingData: LandingContent = {
         description: "Wujudkan perjalanan Umrah impian anda dengan mudah dan terpercaya, dari mana saja, kapan saja.",
         tagsLine: "#bikinTenang",
         buttonLabel: "Cek Izin Umroh Kami Disini",
+        buttonUrl : "https://simpu.kemenag.go.id/home/detail/3039",
         imageUrl: "/assets/image/hero_landing.png",
         altText: "image hero"
     },
@@ -17,56 +18,129 @@ export const dummyLandingData: LandingContent = {
         },
         silver: {
             id: "silver",
-            image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
+            image: "/assets/image/packages-umrah/silver/cover-umrah-hemat-ibadah-fokus.jpg",
             tags: [
                 { icon: "clock", label: "9 Hari" },
-                { icon: "calendar", label: "Reguler" },
-                { icon: "plane", label: "Langsung" },
-                { icon: "train", label: "Kereta Cepat" }
+                { icon: "la-kaaba", label: "Reguler" },
+                { icon: "plane", label: "Transit" }
             ],
             title: "Umroh Hemat - Fokus Ibadah",
-            date: "07 Juli 2025 +5 tanggal",
+            departureDate: [
+                {
+                    date: "2025-03-03T10:00:00+07:00",
+                    status: "expired"
+                },
+                {
+                    date: "2025-03-17T10:00:00+07:00",
+                    status: "expired"
+                },
+                {
+                    date: "2025-04-15T10:00:00+07:00",
+                    status: "closing-umrah"
+                },
+                {
+                    date: "2025-05-01T10:00:00+07:00",
+                    status: "musim-haji"
+                },
+                {
+                    date: "2025-06-01T10:00:00+07:00",
+                    status: "musim-haji"
+                },
+                {
+                    date: "2025-07-07T10:00:00+07:00",
+                    status: "active"
+                },
+                {
+                    date: "2025-07-21T10:00:00+07:00",
+                    status: "active"
+                },
+                {
+                    date: "2025-08-04T10:00:00+07:00",
+                    status: "active"
+                },
+                {
+                    date: "2025-08-18T10:00:00+07:00",
+                    status: "active"
+                },
+                {
+                    date: "2025-09-01T10:00:00+07:00",
+                    status: "active"
+                },
+                {
+                    date: "2025-09-15T10:00:00+07:00",
+                    status: "active"
+                },
+                {
+                    date: "2025-10-06T10:00:00+07:00",
+                    status: "coming-soon"
+                },
+                {
+                    date: "2025-10-20T10:00:00+07:00",
+                    status: "coming-soon"
+                },
+                {
+                    date: "2025-11-03T10:00:00+07:00",
+                    status: "coming-soon"
+                },
+                {
+                    date: "2025-11-17T10:00:00+07:00",
+                    status: "coming-soon"
+                },
+                {
+                    date: "2025-12-01T10:00:00+07:00",
+                    status: "coming-soon"
+                },
+                {
+                    date: "2025-12-15T10:00:00+07:00",
+                    status: "coming-soon"
+                }
+            ],
             details: [
-                { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
             ],
             price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-            buttonLabel: "Detail Paket"
+            buttonLabel: "Detail Paket",
+            category: "silver"
         },
         gold: {
             id: "gold",
-            image: "https://cdn.builder.io/api/v1/image/assets/TEMP/example-gold",
-            tags: [ { icon: "clock", label: "9 Hari" },
-                { icon: "calendar", label: "Reguler" },
+            image: "/assets/image/packages-umrah/gold/cover-umrah-cerdas-ibadah-fokus.jpg",
+            tags: [
+                { icon: "clock", label: "9 Hari" },
+                { icon: "plus-wisata", label: "Plus Wisata" },
                 { icon: "plane", label: "Langsung" },
                 { icon: "train", label: "Kereta Cepat" }],
-            title: "Paket Gold Umroh Premium",
-            date: "15 Agustus 2025 +5 tanggal",
+            title: "Umrah Cerdas - Ibadah Fokus",
+            departureDate: [],
             details: [
-                { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
             ],
             price: { current: "Rp 30.000.000", original: "Rp 35.000.000" },
-            buttonLabel: "Detail Paket"
+            buttonLabel: "Detail Paket",
+            category: "gold"
         },
         platinum: {
             id: "platinum",
-            image: "https://cdn.builder.io/api/v1/image/assets/TEMP/example-platinum",
-            tags: [ { icon: "clock", label: "9 Hari" },
-                { icon: "calendar", label: "Reguler" },
+            image: "/assets/image/packages-umrah/platinum/cover-umrah-eksklusif-ibadah-terbaik.jpg",
+            tags: [
+                { icon: "clock", label: "9 Hari" },
+                { icon: "la-kaaba", label: "Reguler" },
                 { icon: "plane", label: "Langsung" },
                 { icon: "train", label: "Kereta Cepat" }],
-            title: "Paket Platinum Umroh VIP",
-            date: "01 September 2025 +5 tanggal",
+            title: "Umrah Eksklusif - Ibadah Terbaik",
+            departureDate: [],
             details: [
-                { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
             ],
             price: { current: "Rp 40.000.000", original: "Rp 45.000.000" },
-            buttonLabel: "Detail Paket"
+            buttonLabel: "Detail Paket",
+            category: "platinum"
         }
     },
     packagesContent: {
@@ -81,57 +155,60 @@ export const dummyLandingData: LandingContent = {
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "silver"
                 },
                 {
                     id: "silver",
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "silver"
                 },
                 {
                     id: "silver",
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "silver"
                 }
             ]
         },
@@ -146,76 +223,80 @@ export const dummyLandingData: LandingContent = {
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "gold"
                 },
                 {
                     id: "silver",
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "gold"
                 },
                 {
                     id: "silver",
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "gold"
                 },
                 {
                     id: "silver",
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "gold"
                 }
             ]
 
@@ -231,38 +312,41 @@ export const dummyLandingData: LandingContent = {
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "platinum"
                 },
                 {
                     id: "silver",
                     image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
-                        { icon: "calendar", label: "Reguler" },
+                        { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
                     title: "Umroh Hemat - Fokus Ibadah",
-                    date: "07 Juli 2025 +5 tanggal",
+                    departureDate: [],
                     details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline" },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel" },
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel" }
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
                     price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
-                    buttonLabel: "Detail Paket"
+                    buttonLabel: "Detail Paket",
+                    category: "platinum"
+
                 }
             ]
         }

@@ -18,6 +18,7 @@ export interface HeroContent {
     buttonLabel: string;
     imageUrl?: string | null;
     altText: string;
+    buttonUrl?: string | null;
 }
 
 // Affiliates Section
@@ -84,10 +85,16 @@ export interface PackageItem {
     image: string;
     tags: Tag[];
     title: string;
-    date: string;
+    departureDate: DepartureDates[];
     details: PackageDetailItem[];
     price: Price;
     buttonLabel: string;
+    category: string;
+}
+
+export interface DepartureDates {
+    date: string;
+    status: string;
 }
 
 export interface PackageDetailItem {
@@ -95,6 +102,7 @@ export interface PackageDetailItem {
     label: string; // e.g., "Madinah", "Makkah", "Maskapai"
     value: string; // e.g., "Lion Air", "Al Marwah Rayhan by Rotana"
     altText: string; // e.g., "Airline", "Hotel"
+    rating: number;
 }
 
 // Single Package Section
@@ -134,8 +142,8 @@ export interface Price {
 }
 
 export interface Tag {
-    icon: string; // e.g., "calendar", "clock", "plane", "train"
-    label: string; // e.g., "Kereta Cepat", "Langsung", "Reguler", "9 Hari"
+    icon: string;
+    label: string;
 }
 
 export interface NavIcon {
