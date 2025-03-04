@@ -13,6 +13,13 @@ jest.mock("next/navigation", () => ({
     }),
 }));
 
+jest.mock("bcryptjs", () => ({
+    hash: jest.fn(),
+    compareSync: jest.fn(),
+}));
+
+
+
 // ✅ Mock Next.js App Router API (e.g., `NextResponse` and `NextRequest`)
 jest.mock("next/server", () => {
     class MockNextResponse {

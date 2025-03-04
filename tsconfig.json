@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "target": "es6",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "noImplicitAny": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -22,9 +23,17 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@/public/*": ["./public/assets/*"]
+      "@/public/*": ["./public/assets/*"],
+      "@lib/*": ["/src/shared/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts",  "svgr.d.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "svgr.d.ts",
+    "src/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
