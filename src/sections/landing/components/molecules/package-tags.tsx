@@ -1,5 +1,5 @@
 import {Tag} from "@/modules/landing/domain/landingModel";
-import {Chip} from "@/sections/landing/components/atoms/chip";
+import {Chip} from "@/sections/landing/components/templates/chip";
 import {CustomSwiper} from "@/sections/landing/components/atoms/Swiper";
 import React from "react";
 import Image from "next/image";
