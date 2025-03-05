@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { LandingContent } from "@/modules/landing/domain/landingModel";
+import {dummyLandingData} from "@/modules/landing/infrastructure/landingDumyData";
 
 interface LandingContextType {
     data: LandingContent | null;
@@ -18,10 +19,18 @@ export function LandingProvider({ children }: { children: ReactNode }) {
         async function fetchLandingData() {
             try {
                 const response = await fetch("/api/landing");
-                const result = await response.json();
-                setData(result);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result: { data: LandingContent } = await response.json();
+                setData(result.data);
             } catch (error) {
                 console.error("Error fetching landing data:", error);
+
+                // Gunakan dummy data jika fetch gagal
+                setData(dummyLandingData);
             } finally {
                 setLoading(false);
             }
@@ -36,6 +45,7 @@ export function LandingProvider({ children }: { children: ReactNode }) {
         </LandingContext.Provider>
     );
 }
+
 
 export function useLandingContext() {
     const context = useContext(LandingContext);

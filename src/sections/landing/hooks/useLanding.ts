@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {LandingContent} from "@/modules/landing/domain/landingModel";
+import {dummyLandingData} from "@/modules/landing/infrastructure/landingDumyData";
 
 export function useLanding() {
     const [data, setData] = useState<LandingContent | null>(null);
@@ -9,7 +10,7 @@ export function useLanding() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch("/api/landing");
+                const response = await fetch("/api/landing", {cache: "no-store"});
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -23,8 +24,9 @@ export function useLanding() {
                     errorMessage = err.message;
                 }
 
-                console.error("Error fetching landing data:", errorMessage);
+                console.log(`Error fetching landing data: ${errorMessage}` );
                 setError(errorMessage);
+                setData(dummyLandingData)
             } finally {
                 setLoading(false);
             }

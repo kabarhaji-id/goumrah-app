@@ -97,10 +97,19 @@ export const dummyLandingData: LandingContent = {
             ],
             details: [
                 { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
-                { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
-                { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
+                { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 4},
+                { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 3  }
             ],
-            price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+            price: {
+                quadPrice: 25900000,
+                triplePrice: 27900000,
+                doublePrice: 29900000,
+                infantPrice: 0,
+                quadFinalPrice: 22900000,
+                tripleFinalPrice: 24900000,
+                doubleFinalPrice: 26900000,
+                infantFinalPrice: 0
+            },
             buttonLabel: "Detail Paket",
             category: "silver"
         },
@@ -119,7 +128,14 @@ export const dummyLandingData: LandingContent = {
                 { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                 { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
             ],
-            price: { current: "Rp 30.000.000", original: "Rp 35.000.000" },
+            price: { quadPrice: 25900000,
+                triplePrice: 27900000,
+                doublePrice: 29900000,
+                infantPrice: 0,
+                quadFinalPrice: 22900000,
+                tripleFinalPrice: 24900000,
+                doubleFinalPrice: 26900000,
+                infantFinalPrice: 0  },
             buttonLabel: "Detail Paket",
             category: "gold"
         },
@@ -138,7 +154,14 @@ export const dummyLandingData: LandingContent = {
                 { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                 { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
             ],
-            price: { current: "Rp 40.000.000", original: "Rp 45.000.000" },
+            price: { quadPrice: 25900000,
+                triplePrice: 27900000,
+                doublePrice: 29900000,
+                infantPrice: 0,
+                quadFinalPrice: 22900000,
+                tripleFinalPrice: 24900000,
+                doubleFinalPrice: 26900000,
+                infantFinalPrice: 0  },
             buttonLabel: "Detail Paket",
             category: "platinum"
         }
@@ -166,7 +189,14 @@ export const dummyLandingData: LandingContent = {
                         { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0 },
                     buttonLabel: "Detail Paket",
                     category: "silver"
                 },
@@ -186,7 +216,14 @@ export const dummyLandingData: LandingContent = {
                         { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
                     buttonLabel: "Detail Paket",
                     category: "silver"
                 },
@@ -206,7 +243,14 @@ export const dummyLandingData: LandingContent = {
                         { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
                     buttonLabel: "Detail Paket",
                     category: "silver"
                 }
@@ -234,7 +278,14 @@ export const dummyLandingData: LandingContent = {
                         { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
                     buttonLabel: "Detail Paket",
                     category: "gold"
                 },
@@ -254,7 +305,14 @@ export const dummyLandingData: LandingContent = {
                         { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
                     buttonLabel: "Detail Paket",
                     category: "gold"
                 },
@@ -274,7 +332,14 @@ export const dummyLandingData: LandingContent = {
                         { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
                     buttonLabel: "Detail Paket",
                     category: "gold"
                 },
@@ -291,10 +356,17 @@ export const dummyLandingData: LandingContent = {
                     departureDate: [],
                     details: [
                         { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 4},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
                     buttonLabel: "Detail Paket",
                     category: "gold"
                 }
@@ -323,7 +395,14 @@ export const dummyLandingData: LandingContent = {
                         { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
                     buttonLabel: "Detail Paket",
                     category: "platinum"
                 },
@@ -343,7 +422,14 @@ export const dummyLandingData: LandingContent = {
                         { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
                         { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
                     ],
-                    price: { current: "Rp 23.900.000", original: "Rp 26.900.000" },
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0 },
                     buttonLabel: "Detail Paket",
                     category: "platinum"
 

@@ -137,8 +137,14 @@ export interface SectionHeader {
 }
 
 export interface Price {
-    current: string;
-    original: string;
+    quadPrice: number,
+    triplePrice: number,
+    doublePrice: number,
+    infantPrice: number,
+    quadFinalPrice: number,
+    tripleFinalPrice: number,
+    doubleFinalPrice: number,
+    infantFinalPrice: number,
 }
 
 export interface Tag {
