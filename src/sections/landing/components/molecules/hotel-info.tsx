@@ -1,23 +1,22 @@
-import PackageDetailItem from "@/sections/landing/components/molecules/package-detail-item";
+
+import { PackageDetailItem } from "@/modules/landing/domain/landingModel";
+import ResponsiveWrapper from "@/sections/landing/components/atoms/ResponsiveWrapper";
+import {Rating2} from "@/sections/landing/components/templates/getRating";
+import TextLabel from "@/sections/landing/components/templates/TextLabel";
 
 interface HotelInfoProps {
-    location: string;
-    hotelName: string;
-    rating: number;
+    detail: PackageDetailItem;
+    className?: string;
 }
 
-const HotelInfo: React.FC<HotelInfoProps> = ({location, hotelName, rating}) => {
-    return (<div className="flex items-center gap-2">
-            <PackageDetailItem
-                icon="hotel"
-                label={location}
-                value={hotelName}
-                starRating={rating} // Hotel icon remains 38x23
-            />
-
-
-        </div>
-
+const HotelInfo: React.FC<HotelInfoProps> = ({ detail, className = "" }) => {
+    return (
+        <ResponsiveWrapper className={`text-[13px] leading-[18px] tracking-wide ${className}`}>
+            <Rating2 starsRating={detail.rating} />
+            <TextLabel text={detail.label} className="w-[70px]" />
+            <TextLabel text=":" className="mr-0.5" />
+            <TextLabel text={detail.value} bold className="w-auto" />
+        </ResponsiveWrapper>
     );
 };
 

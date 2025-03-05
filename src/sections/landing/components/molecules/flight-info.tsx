@@ -1,16 +1,20 @@
-import PackageDetailItem from "@/sections/landing/components/molecules/package-detail-item";
+import { PackageDetailItem } from "@/modules/landing/domain/landingModel";
+import TextLabel from "@/sections/landing/components/templates/TextLabel";
+import CustomMaskapaiIcon from "@/public/icons/custom-icon/icon-maskapai.svg";
+import ResponsiveWrapper from "@/sections/landing/components/atoms/ResponsiveWrapper";
 
-interface FlightInfoProps {
-    airline: string;
+interface AirlineInfoProps {
+    airLines: PackageDetailItem;
 }
 
-const FlightInfo: React.FC<FlightInfoProps> = ({ airline }) => {
+const FlightInfo: React.FC<AirlineInfoProps> = ({ airLines }) => {
     return (
-        <PackageDetailItem
-            icon="airline"
-            label="Maskapai"
-            value={airline}// Example: Flight icon 24x24
-        />
+        <ResponsiveWrapper className="text-[13px] leading-[18px] tracking-wide">
+            <CustomMaskapaiIcon className="flex flex-shrink-0" />
+            <TextLabel text={airLines.label} className="w-[70px]" />
+            <TextLabel text=":" />
+            <TextLabel text={airLines.value} bold />
+        </ResponsiveWrapper>
     );
 };
 
