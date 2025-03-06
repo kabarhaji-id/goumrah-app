@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 import { cn } from "@/shared/libs/utils";
-import { ChevronRightIcon } from "lucide-react";
+import { LuChevronRight } from "react-icons/lu";
 
 export interface SectionHomepageProps {
     departureCity: string;
@@ -72,7 +72,7 @@ const SectionTitle = React.forwardRef<HTMLParagraphElement, SectionTitleProps>(
                         <span className={`text-xs leading-[18px] ${colorClass}`}>
                             {seeAllText} {/* 🔹 Dynamic text */}
                         </span>
-                        {seeAllIcon || <ChevronRightIcon className={`h-4 w-4 stroke-current`} />} {/* 🔹 Dynamic icon */}
+                        {seeAllIcon || <LuChevronRight className={`h-4 w-4 stroke-current`} />} {/* 🔹 Dynamic icon */}
                     </Link>
                 )}
             </div>

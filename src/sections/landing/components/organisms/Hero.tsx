@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { HeroContent } from "@/modules/landing/domain/landingModel";
 import { ImageErrorFallback } from "@/sections/landing/components/atoms/imageErrorFallback";
 
 export default function Hero({ title, description, tagsLine, buttonLabel, buttonUrl, imageUrl, altText }: HeroContent) {
     const [error, setError] = useState(false);
-    const router = useRouter();
 
     const handleRetry = () => {
         setError(false);
