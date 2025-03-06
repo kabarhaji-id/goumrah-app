@@ -40,17 +40,7 @@ export const fallbackFooterData: FooterData = {
     },
     downloadInfo: {
         sectionTitle: "Unduh Aplikasi goumrah.id",
-        appStore: {
-            href: "https://apps.apple.com/app/goumroh",
-            imageSrc: "/assets/images/app-store.png",
-            imageAlt: "Download on the App Store",
-        },
-        googlePlay: {
-            href: "https://play.google.com/store/apps/details?id=id.goumroh.app",
-            imageSrc: "/assets/images/google-play.png",
-            imageAlt: "Get it on Google Play",
-            downloadText: "Download on the",
-            storeName: "Google Play",
-        },
+        appStore: "https://apps.apple.com/app/goumroh",
+        playStore: "https://play.google.com/store/apps/details?id=id.goumroh.app",
     },
 };

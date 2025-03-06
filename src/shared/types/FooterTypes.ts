@@ -53,18 +53,8 @@ export interface LinkGroupData {
  * Interface for app download information
  */
 export interface AppDownloadData {
-    appStore: {
-        href: string;
-        imageSrc: string;
-        imageAlt: string;
-    };
-    googlePlay: {
-        href: string;
-        downloadText: string;
-        storeName: string;
-        imageSrc: string;
-        imageAlt: string;
-    };
+    appStore:string;
+    playStore: string;
     sectionTitle: string;
 }
 

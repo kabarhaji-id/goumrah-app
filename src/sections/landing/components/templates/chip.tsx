@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@lib/libs/utils";
+import { cn } from "@/shared/libs/utils";
 import { cva, VariantProps } from "class-variance-authority";
 
 const chipVariants = cva(

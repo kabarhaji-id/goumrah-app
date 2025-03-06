@@ -19,10 +19,10 @@ const PPIUInfo: React.FC<PPIUInfoProps> = ({ licenseInfo }) => {
     return (
         <div className="flex flex-col justify-center gap-1 w-full">
             <div className="flex gap-2 items-center">
-                <div className="w-full h-[41px]">
+                <div className="w-fit h-[41px]">
                     <Kemenag className="w-full h-full"/>
                 </div>
-                <div className="w-full h-[36px]">
+                <div className="w-[85px] h-[36px]">
                     <SiskoPatuh className="w-full h-full"/>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import "moment/locale/id";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import {DepartureDates} from "@/modules/landing/domain/landingModel";
+import {SectionData} from "@/modules/seo/domain/AnalyticTypes";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -152,3 +153,48 @@ export function formatDistance(distanceInMeters: number, customText?: string): s
         ? `${(distanceInMeters / 1000).toFixed(1)} km`
         : `${distanceInMeters} m`;
 }
+
+
+export const getSectionData = (pathname: string): SectionData => {
+    if (pathname.startsWith("/home")) {
+        return {
+            sectionId: "home_section",
+            sectionName: "Home Page",
+            widget: "HOME_WIDGET",
+            position: 1,
+            activeFilter: null,
+            filters: null,
+            details: undefined,
+        };
+    } else if (pathname.startsWith("/products")) {
+        return {
+            sectionId: "products_section",
+            sectionName: "Product Listing",
+            widget: "PRODUCT_LISTING_WIDGET",
+            position: 2,
+            activeFilter: "category",
+            filters: "electronics",
+            details: { sortBy: "popularity" },
+        };
+    } else if (pathname.startsWith("/product/")) {
+        return {
+            sectionId: "product_detail",
+            sectionName: "Product Detail",
+            widget: "PRODUCT_DETAIL_WIDGET",
+            position: 3,
+            activeFilter: null,
+            filters: null,
+            details: { productId: pathname.split("/").pop() },
+        };
+    } else {
+        return {
+            sectionId: "default_section",
+            sectionName: "Default Section",
+            widget: "DEFAULT_WIDGET",
+            position: 0,
+            activeFilter: null,
+            filters: null,
+            details: undefined,
+        };
+    }
+};

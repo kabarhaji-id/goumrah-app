@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import {AppDownloadData} from "@/shared/types/FooterTypes";
+import { AppDownloadData } from "@/shared/types/FooterTypes";
 import { useRouter } from "next/navigation";
+import AppStore from "@/public/image/app-store.svg";
+import GoogleStore from "@/public/image/play-store.svg";
+import {useScreenType} from "@/shared/libs/useScreenTypes";
 
 /**
  * Props for the DownloadSection component
@@ -12,51 +14,30 @@ interface DownloadSectionProps {
     data: AppDownloadData;
 }
 
-
-const DownloadInfo: React.FC<DownloadSectionProps> = ({data}) => {
-
+const DownloadInfo: React.FC<DownloadSectionProps> = ({ data }) => {
     const router = useRouter();
+    const screenType = useScreenType();
 
     return (
-        <div className="flex flex-col gap-6 min-w-40">
+        <div className="flex flex-col gap-6 min-w-40 w-full">
             <h3 className="text-base font-bold leading-6 text-white opacity-[0.92]">
                 {data.sectionTitle}
             </h3>
-            <div className="flex flex-col gap-4 max-sm:items-center">
+
+            {/* Jika tablet atau mobile, gunakan flex-row + gap */}
+            <div
+                className={`flex ${
+                    screenType !== "desktop" ? "flex-row gap-6 justify-center" : "flex-col gap-4"
+                }`}
+            >
                 {/* App Store Button */}
-                <button
-                    onClick={() => router.push(data.appStore.href)}
-                    className="cursor-pointer bg-transparent border-none p-0"
-                >
-                    <Image
-                        src={data.appStore.imageSrc}
-                        alt={data.appStore.imageAlt}
-                        width={160}
-                        height={50}
-                        priority
-                    />
+                <button onClick={() => router.push(data.appStore)} className={`${screenType !== "desktop" ? "w-fit" : "w-[150px]"}`}>
+                    <AppStore/>
                 </button>
 
                 {/* Google Play Button */}
-                <button
-                    onClick={() => router.push(data.googlePlay.href)}
-                    className="flex gap-6 items-center px-5 py-2 rounded-xl border border-solid bg-neutral-800 border-slate-800 border-opacity-10 w-[203px] cursor-pointer"
-                >
-                    <Image
-                        src={data.googlePlay.imageSrc}
-                        alt={data.googlePlay.imageAlt}
-                        width={40}
-                        height={40}
-                        priority
-                    />
-                    <div className="flex flex-col">
-                        <span className="text-sm leading-5 text-white opacity-[0.82]">
-                            {data.googlePlay.downloadText}
-                        </span>
-                        <span className="text-base font-medium leading-6 text-white opacity-[0.92]">
-                            {data.googlePlay.storeName}
-                        </span>
-                    </div>
+                <button onClick={() => router.push(data.playStore)} className={`${screenType !== "desktop" ? "w-fit" : "w-[150px]"}`}>
+                    <GoogleStore/>
                 </button>
             </div>
         </div>

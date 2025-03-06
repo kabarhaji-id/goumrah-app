@@ -24,7 +24,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/public/*": ["./public/assets/*"],
-      "@lib/*": ["/src/shared/*"]
+      "@/anims/*": ["./public/animations/*"],
+      "@/shared/*": ["./src/shared/*"]
     }
   },
   "include": [
