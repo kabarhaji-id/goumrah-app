@@ -68,7 +68,7 @@ export default function BottomNavigation() {
 
                 {/* Menu navigasi */}
                 <div className="flex justify-around items-center h-16">
-                    {dummyLandingData.mobileMenu.map((item: NavIcon, index) => {
+                    {dummyLandingData.mobileMenu.map((item: NavIcon) => {
                         const IconComponent = iconMap[item.icon];
 
                         return (

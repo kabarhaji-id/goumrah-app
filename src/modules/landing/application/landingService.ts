@@ -19,7 +19,7 @@ export class LandingService {
             console.warn("⚠️ Landing repository returned an error. Using fallback data.");
             return { data: response.data, error: response.error ?? "Unknown Error", status: response.status };
         } catch (error) {
-            console.error("❌ Unexpected error in LandingService. Returning dummy data.");
+            console.error("❌ Unexpected error in LandingService:", error);
             return { data: dummyLandingData, error: "Internal Server Error", status: 500 };
         }
     }

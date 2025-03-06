@@ -3,9 +3,9 @@
 import React from "react";
 import "swiper/css";
 import "swiper/css/pagination";
-import "../molecules/card.module.scss";
+import "@/sections/landing/components/molecules/card.module.scss";
 
-import { cn } from "@lib/libs/utils";
+import { cn } from "@/shared/libs/utils";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 

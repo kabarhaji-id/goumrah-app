@@ -20,8 +20,8 @@ const PackageTags: React.FC<PackageTagsProps> = ({tags}) => {
 
                 console.log(`Tag ${index}:`, tag); // Debugging: Logs the tag data
 
-                let displayLabel = tag.label;
-                let displayIcon = tag.icon;
+                const displayLabel = tag.label;
+                const displayIcon = tag.icon;
 
                 // Rotate only the plane icon if label is NOT "Langsung"
                 const shouldRotate = tag.icon === "plane" && tag.label !== "Langsung";
@@ -37,7 +37,7 @@ const PackageTags: React.FC<PackageTagsProps> = ({tags}) => {
                         <div className="bg-primary-accent py-[3px] pl-1 pr-0.5">
                             <Image
                                 src={imageUrl}
-                                alt={tag.label}
+                                alt={displayLabel}
                                 width={24}
                                 height={24}
                                 className={`h-4 w-4 ${shouldRotate ? 'rotate-90' : ''}`}

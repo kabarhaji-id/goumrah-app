@@ -73,7 +73,7 @@ export default function WhyChooseUs({ header, benefits, footerTitle, buttonAbout
 
                 {/* CTA Buttons (Stacked on mobile, side-by-side on larger screens) */}
                 <div className="mt-4 flex flex-col sm:flex-row justify-center gap-4">
-                    <Button variant="outline">{buttonAbout}</Button>
+                    <Button variant="secondary">{buttonAbout}</Button>
                     <Button variant="primary">{buttonPackage}</Button>
                 </div>
             </div>

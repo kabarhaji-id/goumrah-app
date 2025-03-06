@@ -169,13 +169,13 @@ export const dummyLandingData: LandingContent = {
     packagesContent: {
         silver: {
             header : {
-                title: "Umrah Ideal dengan Momen Tak Terlupakan mulai dari 22 jt",
-                subtitle: "Sambut Panggilan-Nya"
+                title: "Paket Rekomendasi Silver",
+                subtitle: "Paket Hemat, Ibadah Khidmat"
             },
             packages:[
                 {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
+                    id: "umrah-hemat-ibadah-fokus-silver",
+                    image: "/assets/image/packages-umrah/silver/cover-umrah-hemat-ibadah-fokus.jpg",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
                         { icon: "la-kaaba", label: "Reguler" },
@@ -201,8 +201,8 @@ export const dummyLandingData: LandingContent = {
                     category: "silver"
                 },
                 {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
+                    id: "umrah-hemat-ibadah-dekat-silver",
+                    image: "/assets/image/packages-umrah/silver/cover-umrah-hemat-ibadah-dekat.jpg",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
                         { icon: "la-kaaba", label: "Reguler" },
@@ -228,8 +228,8 @@ export const dummyLandingData: LandingContent = {
                     category: "silver"
                 },
                 {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
+                    id: "umrah-hemat-ibadah-tenang-silver",
+                    image: "/assets/image/packages-umrah/silver/cover-umrah-hemat-ibadah-tenang.jpg",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
                         { icon: "la-kaaba", label: "Reguler" },
@@ -258,13 +258,67 @@ export const dummyLandingData: LandingContent = {
         },
         gold: {
             header : {
-                title: "Umrah Ideal dengan Momen Tak Terlupakan mulai dari 22 jt",
-                subtitle: "Sambut Panggilan-Nya"
+                title: "Paket Rekomendasi Gold",
+                subtitle: "Pilihan Bijak Untuk Perjalanan Penuh Makna"
             },
             packages:[
                 {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
+                    id: "umrah-cerdas-ibadah-tenang-gold",
+                    image: "/assets/image/packages-umrah/gold/cover-umrah-cerdas-ibadah-tenang.jpg",
+                    tags: [
+                        { icon: "clock", label: "9 Hari" },
+                        { icon: "la-kaaba", label: "Reguler" },
+                        { icon: "plane", label: "Langsung" },
+                        { icon: "train", label: "Kereta Cepat" }
+                    ],
+                    title: "Umrah Cerdas - Ibadah Tenang",
+                    departureDate: [],
+                    details: [
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
+                    ],
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
+                    buttonLabel: "Detail Paket",
+                    category: "gold"
+                },
+                {
+                    id: "umrah-cerdas-ibadah-fokus-gold",
+                    image: "/assets/image/packages-umrah/gold/cover-umrah-cerdas-ibadah-fokus.jpg",
+                    tags: [
+                        { icon: "clock", label: "9 Hari" },
+                        { icon: "la-kaaba", label: "Reguler" },
+                        { icon: "plane", label: "Langsung" },
+                        { icon: "train", label: "Kereta Cepat" }
+                    ],
+                    title: "Umroh Cerdas - Ibadah Fokus",
+                    departureDate: [],
+                    details: [
+                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
+                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
+                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
+                    ],
+                    price: { quadPrice: 25900000,
+                        triplePrice: 27900000,
+                        doublePrice: 29900000,
+                        infantPrice: 0,
+                        quadFinalPrice: 22900000,
+                        tripleFinalPrice: 24900000,
+                        doubleFinalPrice: 26900000,
+                        infantFinalPrice: 0  },
+                    buttonLabel: "Detail Paket",
+                    category: "gold"
+                },
+                {
+                    id: "umrah-cerdas-plus-wisata-turkey-gold",
+                    image: "/assets/image/packages-umrah/gold/cover-umrah-cerdas-plus-wisata-turkey.jpg",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
                         { icon: "la-kaaba", label: "Reguler" },
@@ -290,69 +344,15 @@ export const dummyLandingData: LandingContent = {
                     category: "gold"
                 },
                 {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
+                    id: "umrah-cerdas-plus-wisata-dubai-gold",
+                    image: "/assets/image/packages-umrah/gold/cover-umrah-cerdas-plus-wisata-dubai.jpg",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
                         { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
-                    title: "Umroh Hemat - Fokus Ibadah",
-                    departureDate: [],
-                    details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
-                    ],
-                    price: { quadPrice: 25900000,
-                        triplePrice: 27900000,
-                        doublePrice: 29900000,
-                        infantPrice: 0,
-                        quadFinalPrice: 22900000,
-                        tripleFinalPrice: 24900000,
-                        doubleFinalPrice: 26900000,
-                        infantFinalPrice: 0  },
-                    buttonLabel: "Detail Paket",
-                    category: "gold"
-                },
-                {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
-                    tags: [
-                        { icon: "clock", label: "9 Hari" },
-                        { icon: "la-kaaba", label: "Reguler" },
-                        { icon: "plane", label: "Langsung" },
-                        { icon: "train", label: "Kereta Cepat" }
-                    ],
-                    title: "Umroh Hemat - Fokus Ibadah",
-                    departureDate: [],
-                    details: [
-                        { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
-                        { icon: "hotel", label: "Madinah", value: "Al Marwah Rayhan by Rotana", altText: "Hotel",   rating: 5},
-                        { icon: "hotel", label: "Makkah", value: "Anjum Hotel", altText: "Hotel", rating: 5  }
-                    ],
-                    price: { quadPrice: 25900000,
-                        triplePrice: 27900000,
-                        doublePrice: 29900000,
-                        infantPrice: 0,
-                        quadFinalPrice: 22900000,
-                        tripleFinalPrice: 24900000,
-                        doubleFinalPrice: 26900000,
-                        infantFinalPrice: 0  },
-                    buttonLabel: "Detail Paket",
-                    category: "gold"
-                },
-                {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
-                    tags: [
-                        { icon: "clock", label: "9 Hari" },
-                        { icon: "la-kaaba", label: "Reguler" },
-                        { icon: "plane", label: "Langsung" },
-                        { icon: "train", label: "Kereta Cepat" }
-                    ],
-                    title: "Umroh Hemat - Fokus Ibadah",
+                    title: "Umrah Cerdas - Plus Wisata Dubai",
                     departureDate: [],
                     details: [
                         { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
@@ -375,20 +375,20 @@ export const dummyLandingData: LandingContent = {
         },
         platinum: {
             header : {
-                title: "Umrah Ideal dengan Momen Tak Terlupakan mulai dari 22 jt",
-                subtitle: "Sambut Panggilan-Nya"
+                title: "Paket Rekomendasi Platinum",
+                subtitle: "Ibadah Tenang, Nyaman Maksimal"
             },
             packages:[
                 {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
+                    id: "umrah-eksklusif-ibadah-terbaik-platinum",
+                    image: "/assets/image/packages-umrah/platinum/cover-umrah-eksklusif-ibadah-terbaik.jpg",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
                         { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
-                    title: "Umroh Hemat - Fokus Ibadah",
+                    title: "Umrah Eksklusif - Ibadah Terbaik",
                     departureDate: [],
                     details: [
                         { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },
@@ -407,15 +407,15 @@ export const dummyLandingData: LandingContent = {
                     category: "platinum"
                 },
                 {
-                    id: "silver",
-                    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/be720e15d1575589a7a325038d4b0e925bd1fc85",
+                    id: "umrah-eksklusif-ibadah-ternyaman-platinum",
+                    image: "/assets/image/packages-umrah/platinum/cover-umrah-eksklusif-ibadah-ternyaman.jpg",
                     tags: [
                         { icon: "clock", label: "9 Hari" },
                         { icon: "la-kaaba", label: "Reguler" },
                         { icon: "plane", label: "Langsung" },
                         { icon: "train", label: "Kereta Cepat" }
                     ],
-                    title: "Umroh Hemat - Fokus Ibadah",
+                    title: "Umrah Eksklusif - Ibadah Ternyaman",
                     departureDate: [],
                     details: [
                         { icon: "airline", label: "Maskapai", value: "Lion Air", altText: "Airline",  rating:0 },

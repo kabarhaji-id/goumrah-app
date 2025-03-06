@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import FlightInfo from "@/sections/landing/components/molecules/flight-info";
 import HotelInfo from "@/sections/landing/components/molecules/hotel-info";
 import { PackageDetailItem } from "@/modules/landing/domain/landingModel";

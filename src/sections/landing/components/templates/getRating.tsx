@@ -1,9 +1,9 @@
-import { cn } from "@lib/libs/utils";
-import { StarIcon } from "lucide-react";
+import { cn } from "@/shared/libs/utils";
 
 import CustomHotelStars3 from "@/public/icons/custom-icon/icon-hotel-stars-3.svg";
 import CustomHotelStars4 from "@/public/icons/custom-icon/icon-hotel-stars-4.svg";
 import CustomHotelStars5 from "@/public/icons/custom-icon/icon-hotel-stars-5.svg";
+import {LuStar} from "react-icons/lu";
 
 export const Rating = ({
   totalStars,
@@ -15,7 +15,7 @@ export const Rating = ({
   const overallStars = 5;
   const stars = Array.from({ length: overallStars }, (_, index) => {
     return index < Math.floor(totalStars) ? (
-      <StarIcon
+      <LuStar
         key={index}
         className="h-[14px] w-[14px]"
         fill="#F2AC30"
