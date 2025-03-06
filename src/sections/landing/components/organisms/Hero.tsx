@@ -1,26 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { HeroContent } from "@/modules/landing/domain/landingModel";
 import { ImageErrorFallback } from "@/sections/landing/components/atoms/imageErrorFallback";
+import { motion } from "framer-motion";
 
 export default function Hero({ title, description, tagsLine, buttonLabel, buttonUrl, imageUrl, altText }: HeroContent) {
     const [error, setError] = useState(false);
+    const [displayedText, setDisplayedText] = useState("");
+    const [index, setIndex] = useState(0);
+    const [isTyping, setIsTyping] = useState(true); // Track if typing is still happening
+
+    useEffect(() => {
+        if (index < title.length) {
+            const timeout = setTimeout(() => {
+                setDisplayedText((prev) => prev + title[index]);
+                setIndex(index + 1);
+            }, 100); // Typing speed (adjust as needed)
+
+            return () => clearTimeout(timeout);
+        } else {
+            setIsTyping(false); // Stop cursor when typing is done
+        }
+    }, [index, title]);
 
     const handleRetry = () => {
         setError(false);
     };
 
     const handleClick = () => {
-        if (!buttonUrl) {
-            return;
-        }
+        if (!buttonUrl) return;
         window.open(buttonUrl, "_blank", "noopener,noreferrer");
     };
 
     const validImageUrl = error || !imageUrl ? "/assets/image/no-image.png" : imageUrl;
 
     return (
-        <main className="container max-w-screen-xl mx-auto px-4 bg-[url(/assets//image/bg-image.png)]  bg-no-repeat bg-right bg-contain no-repeat">
+        <main className="container max-w-screen-xl mx-auto px-4 bg-[url(/assets/image/bg-image.png)] bg-no-repeat bg-right bg-contain">
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center py-12">
                 {/* Image Section */}
                 <div className="w-full h-[300px] sm:h-[350px] lg:h-[411px] relative rounded-2xl overflow-hidden flex justify-center">
@@ -42,9 +57,25 @@ export default function Hero({ title, description, tagsLine, buttonLabel, button
                 </div>
 
                 {/* Text Section */}
-                <div className="text-center md:text-left flex flex-col justify-center px-4 ">
+                <div className="text-center md:text-left flex flex-col justify-center px-4">
                     <h1 className="mb-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-teal-600 leading-snug sm:leading-tight lg:leading-[60px] max-w-[90%] sm:max-w-[500px] lg:max-w-[600px] tracking-tight">
-                        {title}
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            className="inline-block"
+                        >
+                            {displayedText}
+                        </motion.span>
+                        {isTyping && (
+                            <motion.span
+                                animate={{ opacity: [0, 1, 0] }} // Blinking cursor effect
+                                transition={{ repeat: Infinity, duration: 0.8 }}
+                                className="text-teal-500"
+                            >
+                                |
+                            </motion.span>
+                        )}
                     </h1>
                     <p className="mb-4 text-sm sm:text-base font-semibold leading-relaxed max-w-[532px] text-emerald-950">
                         {description}
