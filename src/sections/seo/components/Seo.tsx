@@ -1,122 +1,96 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';  // For dynamic route parameters
-import { DefaultSeo } from 'next-seo';
-import { SEOConfig } from '@/modules/seo/domain/SeoModel'; // Adjust import based on your project structure
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { DefaultSeo, NextSeo } from "next-seo";
+import { SEOConfig } from "@/modules/seo/domain/SeoModel";
+import { SeoService } from "@/modules/seo/application/SeoService";
+import { SeoRepository } from "@/modules/seo/infrastructure/SeoRepository";
 
-// Assuming you have your SeoService to fetch dynamic SEO data
-import { SeoService } from '@/modules/seo/application/SeoService';
-import { SeoRepository } from '@/modules/seo/infrastructure/SeoRepository';
+// Ambil BASE_URL dari .env atau gunakan default
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://goumrah.id";
 
-// Create instances of SeoRepository and SeoService
+// Inisialisasi SEO Service
 const seoRepository = new SeoRepository();
 const seoService = new SeoService(seoRepository);
 
-export default function SeoPage() {
-    const { slug } = useParams();  // Get the dynamic route parameter (slug)
+export default function Seo() {
+    const pathname = usePathname();
     const [seoData, setSeoData] = useState<SEOConfig | null>(null);
 
-    // Fallback SEO data in case the SEO data is not available
+    // Data SEO default (jika API tidak mengembalikan data)
     const fallbackSeoData: SEOConfig = {
-        title: 'Default Title',
-        titleTemplate: '%s | Default Website',
-        defaultTitle: 'Default Website',
-        description: 'Default Description',
+        title: "Default Title",
+        titleTemplate: "%s | Goumrah",
+        defaultTitle: "Goumrah - Your Travel Partner",
+        description: "Best Umrah & Hajj Services",
         openGraph: {
-            type: 'website',
-            locale: 'en_US',
-            url: 'https://defaultwebsite.com',
-            site_name: 'Default Website',
-            title: 'Default OG Title',
-            description: 'Default OG Description',
+            type: "website",
+            locale: "en_US",
+            url: `${BASE_URL}${pathname}`,
+            site_name: "Goumrah",
+            title: "Goumrah - Trusted Umrah Service",
+            description: "Plan your Umrah & Hajj easily with Goumrah.",
             images: [
                 {
-                    url: 'https://defaultwebsite.com/image.jpg',
+                    url: `${BASE_URL}/default-image.jpg`,
                     width: 1200,
                     height: 630,
-                    alt: 'Default Image',
+                    alt: "Goumrah Banner",
                 },
             ],
         },
         twitter: {
-            cardType: 'summary_large_image',
-            site: '@defaultwebsite',
-            creator: '@defaultwebsite',
-            title: 'Default Twitter Title',
-            description: 'Default Twitter Description',
-            image: 'https://defaultwebsite.com/image.jpg',
+            cardType: "summary_large_image",
+            site: "@goumrah",
+            creator: "@goumrah",
+            title: "Goumrah - Travel with Ease",
+            description: "Best Hajj & Umrah Services",
+            image: `${BASE_URL}/default-image.jpg`,
         },
         additionalMetaTags: [
-            { name: 'theme-color', content: '#000000' },
-            { name: 'msapplication-navbutton-color', content: '#000000' },
-            { name: 'apple-mobile-web-app-status-bar-style', content: '#000000' },
+            { name: "robots", content: "index, follow" }, // ✅ Robots Meta Tag
+            { name: "theme-color", content: "#ffffff" }, // ✅ Warna tema browser
         ],
     };
 
-    // Fetch SEO data when the component mounts
     useEffect(() => {
         const fetchSeoData = async () => {
             try {
-                const data = await seoService.getSeoData(slug);  // Pass slug to the SEO service
-                setSeoData(data || null);  // Use fallback data if no SEO data is returned
+                const data = await seoService.getSeoData(pathname);
+                setSeoData(data || null);
+                console.log("SEO Data Loaded:", data || fallbackSeoData); // ✅ Debugging
             } catch (error) {
-                console.error('Error fetching SEO data:', error);
-                setSeoData(null);  // Fallback to default if there's an error
+                console.error("Error fetching SEO data:", error);
+                setSeoData(null);
             }
         };
 
         fetchSeoData();
-    }, [slug]); // Fetch new data when the slug changes
+    }, [pathname]);
 
-    // Use fallback data if seoData is not available
+    // Gunakan data API jika tersedia, jika tidak pakai fallback
     const dataToRender = seoData || fallbackSeoData;
 
     return (
-        <DefaultSeo
-            title={dataToRender.title}
-            titleTemplate={dataToRender.titleTemplate}
-            defaultTitle={dataToRender.defaultTitle}
-            description={dataToRender.description}
-            canonical={`https://dynamicwebsite.com/${slug}`} // Assuming you want the canonical URL
-            facebook={{
-                appId: '1234567890', // Your Facebook App ID (Optional)
-            }}
-            openGraph={dataToRender.openGraph}
-            additionalMetaTags={dataToRender.additionalMetaTags}
-            twitter={dataToRender.twitter}
-            themeColor="#000000" // Optional: specify the theme color for your site
-            dangerouslySetAllPagesToNoIndex={false} // Set this based on your requirement
-            dangerouslySetAllPagesToNoFollow={false} // Set this based on your requirement
-            defaultOpenGraphImageWidth={1200} // Set default OG image width
-            defaultOpenGraphImageHeight={630} // Set default OG image height
-            defaultOpenGraphVideoWidth={1280} // Set default OG video width
-            defaultOpenGraphVideoHeight={720} // Set default OG video height
-            mobileAlternate={{
-                media: 'only screen and (max-width: 640px)',
-                href: 'https://dynamicwebsite.com/mobile', // Mobile alternate URL
-            }}
-            languageAlternates={[
-                {
-                    hrefLang: 'en',
-                    href: 'https://dynamicwebsite.com/en',
-                },
-                {
-                    hrefLang: 'es',
-                    href: 'https://dynamicwebsite.com/es',
-                },
-            ]}
-            additionalLinkTags={[
-                {
-                    rel: 'icon',
-                    href: 'https://dynamicwebsite.com/favicon.ico',
-                },
-            ]}
-            robotsProps={{
-                noindex: false,
-                nofollow: false,
-            }}
-            norobots={false} // Use this if you want to prevent robots from indexing the page
-        />
+        <>
+            <DefaultSeo
+                title={dataToRender.title}
+                titleTemplate={dataToRender.titleTemplate}
+                defaultTitle={dataToRender.defaultTitle}
+                description={dataToRender.description}
+                canonical={`${BASE_URL}${pathname}`}
+                openGraph={dataToRender.openGraph}
+                twitter={dataToRender.twitter}
+                additionalMetaTags={dataToRender.additionalMetaTags}
+            />
+            <NextSeo
+                title={dataToRender.title}
+                description={dataToRender.description}
+                canonical={`${BASE_URL}${pathname}`}
+                openGraph={dataToRender.openGraph}
+                twitter={dataToRender.twitter}
+            />
+        </>
     );
 }
