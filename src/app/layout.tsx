@@ -6,9 +6,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { LandingProvider } from "@/sections/landing/context/LandingContext";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import Navbar from "@/shared/ui/layout/Navbar";
-import Footer from "@/shared/ui/layout/Footer";
-import ReactQueryProvider from "@/context/ReactQueryProvider";
-import Head from "next/head";
+import ReactQueryProvider from "@/context/ReactQueryProvider"; // ⬅️ Pastikan import
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     subsets: ["latin"],
@@ -19,40 +17,32 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://www.goumrah.id"; // ✅ Pastikan default
 
 export const metadata: Metadata = {
-    title: "Goumrah - Your Trusted Travel Partner", // ✅ Pastikan ini STRING
+    title: "Goumrah - Your Trusted Travel Partner",
     description: "Plan your Umrah & Hajj with Goumrah",
+    openGraph: {
+        title: "Goumrah - Your Trusted Travel Partner",
+        description: "Plan your Umrah & Hajj with Goumrah",
+        url: BASE_URL,
+        type: "website",
+    },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={plusJakartaSans.variable}>
-        <Head>
-            {/* ✅ Gunakan .toString() untuk menghindari TS2322 */}
-            <title>{metadata.title?.toString() ?? "Default Title"}</title>
+        <body className={plusJakartaSans.variable}>
+        <ReactQueryProvider> {/* ⬅️ Pindahkan ke sini agar seluruh aplikasi punya akses */}
+            <ThemeProvider>
+                <LandingProvider>
+                    {/* Navbar is always at the top */}
+                    <Navbar />
 
-            {/* ✅ Pastikan hanya string yang dimasukkan */}
-            {metadata.description && <meta name="description" content={metadata.description.toString()} />}
-            {metadata.title && <meta property="og:title" content={metadata.title.toString()} />}
-            {metadata.description && <meta property="og:description" content={metadata.description.toString()} />}
+                    {/* Main Content Area */}
+                    {children}
 
-            {/* ✅ Perbaiki og:url agar membaca dari .env */}
-            <meta property="og:url" content={BASE_URL} />
-            <meta property="og:type" content="website" />
-        </Head>
-        <body className="font-sans">
-        <ThemeProvider>
-            <LandingProvider>
-                {/* Navbar is always at the top */}
-                <Navbar />
-
-                {/* Main Content Area */}
-                {children}
-
-                <ReactQueryProvider>
-                    <Footer />
-                </ReactQueryProvider>
-            </LandingProvider>
-        </ThemeProvider>
+                </LandingProvider>
+            </ThemeProvider>
+        </ReactQueryProvider>
         </body>
         </html>
     );

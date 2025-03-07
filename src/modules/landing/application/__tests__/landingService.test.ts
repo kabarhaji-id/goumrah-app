@@ -9,8 +9,12 @@ describe("LandingService", () => {
     let landingRepositoryMock: jest.Mocked<LandingRepository>;
 
     beforeEach(() => {
+        // Buat mock repository
         landingRepositoryMock = new LandingRepository() as jest.Mocked<LandingRepository>;
+
+        // Inject mock repository ke dalam service
         landingService = new LandingService(landingRepositoryMock);
+
         jest.clearAllMocks();
     });
 
@@ -20,7 +24,7 @@ describe("LandingService", () => {
             status: 200,
         };
 
-        landingRepositoryMock.getLandingContent.mockResolvedValue(mockData);
+        jest.spyOn(landingRepositoryMock, "getLandingContent").mockResolvedValue(mockData);
 
         const result = await landingService.getLandingData();
 
@@ -29,22 +33,21 @@ describe("LandingService", () => {
     });
 
     it("⚠️ should return standardized error response if repository fails with code 500", async () => {
-        const mockErrorResponse = {
-            data: dummyLandingData,
-            error: "Internal Server Error",
-            status: 500,
-        };
-
-        landingRepositoryMock.getLandingContent.mockRejectedValue(new Error("Failed to fetch"));
+        jest.spyOn(landingRepositoryMock, "getLandingContent").mockRejectedValue(new Error("Failed to fetch"));
 
         const result = await landingService.getLandingData();
 
-        expect(result).toEqual(mockErrorResponse);
+        expect(result).toEqual({
+            data: dummyLandingData,
+            error: "Internal Server Error",
+            status: 500,
+        });
+
         expect(landingRepositoryMock.getLandingContent).toHaveBeenCalledTimes(1);
     });
 
     it("⚠️ should return internal server error if an unexpected error occurs", async () => {
-        landingRepositoryMock.getLandingContent.mockRejectedValue(new Error("Unexpected Error"));
+        jest.spyOn(landingRepositoryMock, "getLandingContent").mockRejectedValue(new Error("Unexpected Error"));
 
         const result = await landingService.getLandingData();
 
