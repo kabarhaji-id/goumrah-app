@@ -1,142 +1,105 @@
 import { LandingService } from "@/modules/landing/application/landingService";
 import { LandingRepository } from "@/modules/landing/infrastructure/landingRepository";
-import { GET, OPTIONS } from "@/app/api/landing/route";
 import { NextResponse } from "next/server";
+import { dummyLandingData } from "@/modules/landing/infrastructure/landingDumyData";
+import {createLandingHandler, OPTIONS} from "@/app/api/landing/route";
 
-// Mock LandingService dan LandingRepository
-jest.mock("@/modules/landing/application/landingService");
 jest.mock("@/modules/landing/infrastructure/landingRepository");
 
 describe("API /api/landing", () => {
-    let mockLandingService: jest.Mocked<LandingService>;
+    let landingServiceMock: jest.Mocked<LandingService>;
+    let landingRepositoryMock: jest.Mocked<LandingRepository>;
+    let GET: () => Promise<NextResponse>;
 
     beforeEach(() => {
-        jest.clearAllMocks(); // Reset semua mock sebelum setiap test
-        const mockRepo = new LandingRepository() as jest.Mocked<LandingRepository>;
-        mockLandingService = new LandingService(mockRepo) as jest.Mocked<LandingService>;
+        jest.clearAllMocks();
 
-        // Inject mock instance ke API handler
-        jest.spyOn(LandingService.prototype, "getLandingData").mockImplementation(mockLandingService.getLandingData);
+        landingRepositoryMock = new LandingRepository() as jest.Mocked<LandingRepository>;
+        landingServiceMock = new LandingService(landingRepositoryMock) as jest.Mocked<LandingService>;
+
+        GET = createLandingHandler(landingServiceMock);
+
+        jest.spyOn(landingServiceMock, "getLandingData");
     });
 
-    test("✅ GET /api/landing - Berhasil mendapatkan data", async () => {
-        // **1️⃣ Arrange** - Simulasi response sukses dari service
+    test("✅ GET /api/landing - Berhasil mendapatkan data dengan status 200", async () => {
+        // **1️⃣ Arrange** - Simulasi response sukses
         const mockData = {
-            data: {
-                heroContent: {
-                    title: "Selamat Datang",
-                    description: "Jelajahi perjalanan terbaik",
-                    tagsLine: "Umroh | Haji | Wisata Halal",
-                    buttonLabel: "Lihat Paket",
-                    imageUrl: "/images/hero.jpg",
-                    altText: "Hero Image",
-                },
-                singlePackage: {
-                    header: { title: "Paket Umroh" },
-                    silver: {
-                        id: "silver",
-                        image: "/images/silver.jpg",
-                        tags: [{ icon: "calendar", label: "9 Hari" }],
-                        title: "Paket Silver",
-                        date: "2025-04-15",
-                        details: [{ icon: "hotel", label: "Hotel", value: "Madinah Hilton", altText: "Hotel" }],
-                        price: { current: "Rp15.000.000", original: "Rp18.000.000" },
-                        buttonLabel: "Pesan Sekarang",
-                    },
-                    gold: {
-                        id: "gold",
-                        image: "/images/gold.jpg",
-                        tags: [{ icon: "calendar", label: "12 Hari" }],
-                        title: "Paket Gold",
-                        date: "2025-05-10",
-                        details: [{ icon: "hotel", label: "Hotel", value: "Makkah Tower", altText: "Hotel" }],
-                        price: { current: "Rp20.000.000", original: "Rp23.000.000" },
-                        buttonLabel: "Pesan Sekarang",
-                    },
-                    platinum: {
-                        id: "platinum",
-                        image: "/images/platinum.jpg",
-                        tags: [{ icon: "calendar", label: "15 Hari" }],
-                        title: "Paket Platinum",
-                        date: "2025-06-20",
-                        details: [{ icon: "hotel", label: "Hotel", value: "Madinah Royal", altText: "Hotel" }],
-                        price: { current: "Rp25.000.000", original: "Rp28.000.000" },
-                        buttonLabel: "Pesan Sekarang",
-                    },
-                },
-                packagesContent: {
-                    silver: { header: { title: "Silver Package" }, packages: [] },
-                    gold: { header: { title: "Gold Package" }, packages: [] },
-                    platinum: { header: { title: "Platinum Package" }, packages: [] },
-                },
-                featuresContent: {
-                    header: { title: "Kenapa Memilih Kami" },
-                    title: "Keunggulan Kami",
-                    benefits: [{ title: "Harga Terjangkau", subtitle: "Harga terbaik", logo: "/icons/price.svg" }],
-                    footerTitle: "Lebih banyak keunggulan",
-                    buttonAbout: "Tentang Kami",
-                    buttonPackage: "Lihat Paket",
-                },
-                momentsContent: {
-                    header: { title: "Kenangan Perjalanan" },
-                    images: ["/images/moment1.jpg", "/images/moment2.jpg"],
-                },
-                affiliateContent: {
-                    header: { title: "Mitra Kami" },
-                    affiliates: [{ name: "Travel Partner", logo: "/logos/partner.svg", width: 100, height: 50 }],
-                },
-                testimonialContent: {
-                    header: { title: "Testimoni Pelanggan" },
-                    reviews: [{ id: 1, reviewer: "Ahmad", age: 35, address: "Jakarta", rating: 5, review: "Sangat memuaskan!", date: "2024-10-01" }],
-                },
-                faqContent: {
-                    header: { title: "FAQ" },
-                    faqs: [{ id: 1, question: "Apa itu paket Silver?", answer: "Paket Silver adalah paket umroh ekonomis." }],
-                },
-                mobileMenu: [{ icon: "home", label: "Beranda", path: "/" }],
-            },
+            data: dummyLandingData,
             status: 200
         };
 
-        mockLandingService.getLandingData.mockResolvedValue(mockData);
+        landingServiceMock.getLandingData.mockResolvedValue(mockData);
 
         // **2️⃣ Act** - Panggil API Handler
         const response = await GET();
 
         // **3️⃣ Assert** - Pastikan response valid
-        expect(response).toBeInstanceOf(NextResponse)
+        expect(response).toBeInstanceOf(NextResponse);
         expect(response.status).toBe(200);
 
         // **4️⃣ Cek isi JSON response**
         const jsonResponse = await response.json();
-        expect(jsonResponse).toEqual(mockData); // ✅ Directly compare with mockData
+        expect(jsonResponse).toEqual(mockData);
+        expect(landingServiceMock.getLandingData).toHaveBeenCalledTimes(1);
     });
 
-    test("❌ GET /api/landing - Gagal mengambil data (Internal Server Error)", async () => {
-        // **1️⃣ Arrange** - Simulasi service gagal
-        mockLandingService.getLandingData.mockRejectedValue(new Error("Internal Server Error"));
+    test("⚠️ GET /api/landing - Service mengembalikan status bukan 200, harus menggunakan dummy data", async () => {
+        // **1️⃣ Arrange** - Simulasi response gagal dengan status 500
+        const mockData = {
+            data: null,
+            error: "Service Error",
+            status: 500
+        };
+
+        landingServiceMock.getLandingData.mockResolvedValue(mockData);
 
         // **2️⃣ Act** - Panggil API Handler
         const response = await GET();
 
-        // **3️⃣ Assert** - Pastikan response valid
-        expect(response).toBeInstanceOf(NextResponse) // ✅ Pastikan response adalah NextResponse
+        // **3️⃣ Assert**
+        expect(response).toBeInstanceOf(NextResponse);
         expect(response.status).toBe(500);
 
         // **4️⃣ Cek isi JSON response**
         const jsonResponse = await response.json();
-        expect(jsonResponse).toEqual({ data: null, error: "Internal Server Error" });
+        expect(jsonResponse).toEqual({
+            data: dummyLandingData,
+            error: "Service Error"
+        });
+        expect(landingServiceMock.getLandingData).toHaveBeenCalledTimes(1);
+    });
 
+    test("❌ GET /api/landing - Service error, harus menggunakan dummy data dengan Internal Server Error", async () => {
+        // **1️⃣ Arrange** - Simulasi service gagal total
+        landingServiceMock.getLandingData.mockRejectedValue(new Error("Unexpected Error"));
+
+        // **2️⃣ Act** - Panggil API Handler
+        const response = await GET();
+
+        // **3️⃣ Assert**
+        expect(response).toBeInstanceOf(NextResponse);
+        expect(response.status).toBe(500);
+
+        // **4️⃣ Cek isi JSON response**
+        const jsonResponse = await response.json();
+        expect(jsonResponse).toEqual({
+            data: dummyLandingData,
+            error: "Internal Server Error"
+        });
+
+        expect(landingServiceMock.getLandingData).toHaveBeenCalledTimes(1);
     });
 
     test("✅ OPTIONS /api/landing - Preflight Request CORS", async () => {
         // **1️⃣ Act** - Panggil OPTIONS handler
-        const response = await OPTIONS();
+        const response = OPTIONS();
 
-        // **2️⃣ Assert** - Periksa response
-        expect(response).toBeInstanceOf(NextResponse) // ✅ Pastikan response adalah NextResponse
+        // **2️⃣ Assert**
+        expect(response).toBeInstanceOf(NextResponse);
         expect(response.status).toBe(204);
         expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
         expect(response.headers.get("Access-Control-Allow-Methods")).toContain("GET, OPTIONS");
+        expect(response.headers.get("Access-Control-Allow-Headers")).toBe("Content-Type");
     });
 });

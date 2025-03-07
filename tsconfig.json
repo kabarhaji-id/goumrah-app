@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": "./",
     "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,17 +19,28 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types":["jest", "node"],
+    "types": [
+      "jest",
+      "node"
+    ],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/public/*": ["./public/assets/*"],
-      "@/anims/*": ["./public/animations/*"],
-      "@/shared/*": ["./src/shared/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@/public/*": [
+        "./public/assets/*"
+      ],
+      "@/anims/*": [
+        "./public/animations/*"
+      ],
+      "@/shared/*": [
+        "./src/shared/*"
+      ]
     }
   },
   "include": [
@@ -36,5 +51,7 @@
     "svgr.d.ts",
     "src/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
