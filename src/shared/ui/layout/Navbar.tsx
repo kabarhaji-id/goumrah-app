@@ -17,7 +17,7 @@ const navigationItems: NavigationItem[] = [
     { label: "Beranda", path: "/" },
     { label: "Paket", path: "/paket" },
     { label: "Blog", path: "/blog" },
-    { label: "GoumrahCare", path: "/care" },
+    { label: "Goumrah Care", path: "/care" },
     { label: "Tentang Kami", path: "/tentang" },
 ];
 

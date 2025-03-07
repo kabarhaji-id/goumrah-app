@@ -1,5 +1,5 @@
 import Image from "next/image";
-import {Star} from "lucide-react";
+import {LuStar} from "react-icons/lu";
 
 
 interface IconProps {
@@ -35,7 +35,7 @@ const Icon: React.FC<IconProps> = ({ src, alt, width, height, className, variant
             {/* If variant is "hotel", show the star + rating */}
             {variant === "hotel" && starRating !== undefined && starRating > 0 && (
                 <div className="flex items-center -gap-1">
-                    <Star size={22} fill="yellow"/>
+                    <LuStar size={22} fill="yellow"/>
                     <span className="text-lg font-bold text-teal-700">{starRating}</span>
                 </div>
             )}
