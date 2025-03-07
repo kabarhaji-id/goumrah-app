@@ -1,46 +1,91 @@
-import { SeoRepository } from "@/modules/seo/infrastructure/SeoRepository";
-import seoConfig from "@/modules/seo/config/next-seo.config";
+import { SeoRepository } from "../SeoRepository";
+import { fallbackSeoData } from "@/modules/seo/constants/fallbackSeo";
 import { SEOConfig } from "@/modules/seo/domain/SeoModel";
+
+// Mock global fetch API
+global.fetch = jest.fn();
 
 describe("SeoRepository", () => {
     let seoRepository: SeoRepository;
 
     beforeEach(() => {
+        jest.clearAllMocks(); // Reset semua mock sebelum setiap tes
         seoRepository = new SeoRepository();
     });
 
-    // ✅ Positive Case: Should return SEO configuration
-    it("should return the correct SEO configuration", () => {
-        // 🛠️ Arrange
-        const expectedConfig: SEOConfig = seoConfig;
+    test("✅ Fetch SEO data successfully (Positive Case)", async () => {
+        // 🔹 Arrange: Setup mock API response
+        const mockSeoData: SEOConfig = {
+            title: "Mock Title",
+            titleTemplate: "%s | Goumrah",
+            defaultTitle: "Mock Default Title",
+            description: "Mock Description",
+            openGraph: {
+                type: "website",
+                locale: "en_US",
+                url: "https://mock-url.com",
+                site_name: "Mock Site",
+                title: "Mock OG Title",
+                description: "Mock OG Description",
+                images: [{ url: "https://mock-url.com/image.jpg", width: 1200, height: 630, alt: "Mock Image" }],
+            },
+            twitter: {
+                cardType: "summary_large_image",
+                site: "@mock",
+                creator: "@mock",
+                title: "Mock Twitter Title",
+                description: "Mock Twitter Description",
+                image: "https://mock-url.com/twitter-image.jpg",
+            },
+            additionalMetaTags: [{ name: "robots", content: "index, follow" }],
+        };
 
-        // 🎯 Act
-        const result = seoRepository.getSeoConfig();
-
-        // ✅ Assert
-        expect(result).toEqual(expectedConfig);
-    });
-
-    // ❌ Negative Case: Should return empty object if seoConfig is null
-    it("should return an empty object when seoConfig is null", () => {
-        // 🛠️ Arrange
-        jest.spyOn(seoRepository, "getSeoConfig").mockReturnValue(null as unknown as SEOConfig);
-
-        // 🎯 Act
-        const result = seoRepository.getSeoConfig();
-
-        // ✅ Assert
-        expect(result).toBeNull();
-    });
-
-    // ❌ Negative Case: Should throw an error if accessing config fails
-    it("should throw an error when repository fails to fetch data", () => {
-        // 🛠️ Arrange
-        jest.spyOn(seoRepository, "getSeoConfig").mockImplementation(() => {
-            throw new Error("Repository error");
+        (fetch as jest.Mock).mockResolvedValue({
+            ok: true,
+            json: jest.fn().mockResolvedValue(mockSeoData),
         });
 
-        // 🎯 Act & ✅ Assert
-        expect(() => seoRepository.getSeoConfig()).toThrow("Repository error");
+        // 🔹 Act: Panggil fungsi fetchSeoData
+        const result = await seoRepository.fetchSeoData("/");
+
+        // 🔹 Assert: Periksa apakah data API sesuai
+        expect(result).toEqual(mockSeoData);
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(fetch).toHaveBeenCalledWith(
+            expect.stringContaining(encodeURIComponent("/")),
+            expect.objectContaining({ method: "GET" })
+        );
+    });
+
+    test("❌ API fails and returns fallback SEO data (Negative Case)", async () => {
+        // 🔹 Arrange: Simulasi respons API gagal
+        (fetch as jest.Mock).mockResolvedValue({
+            ok: false,
+            status: 500,
+            statusText: "Internal Server Error",
+        });
+
+        // 🔹 Act: Panggil fungsi fetchSeoData
+        const result = await seoRepository.fetchSeoData("/");
+
+        // 🔹 Assert: Harus mendapatkan fallback data
+        expect(result).toEqual(fallbackSeoData);
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(fetch).toHaveBeenCalledWith(
+            expect.stringContaining(encodeURIComponent("/")),
+            expect.objectContaining({ method: "GET" })
+        );
+    });
+
+    test("❌ Fetch throws an error and returns fallback SEO data (Negative Case)", async () => {
+        // 🔹 Arrange: Simulasi fetch mengalami error jaringan
+        (fetch as jest.Mock).mockRejectedValue(new Error("Network error"));
+
+        // 🔹 Act: Panggil fungsi fetchSeoData
+        const result = await seoRepository.fetchSeoData("/");
+
+        // 🔹 Assert: Harus mendapatkan fallback data
+        expect(result).toEqual(fallbackSeoData);
+        expect(fetch).toHaveBeenCalledTimes(1);
     });
 });

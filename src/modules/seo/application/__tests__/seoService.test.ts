@@ -1,103 +1,70 @@
 import { SeoService } from "@/modules/seo/application/SeoService";
 import { SeoRepository } from "@/modules/seo/infrastructure/SeoRepository";
 import { SEOConfig } from "@/modules/seo/domain/SeoModel";
+import { fallbackSeoData } from "@/modules/seo/constants/fallbackSeo";
 
-jest.mock("@/modules/seo/infrastructure/SeoRepository"); // Mock SeoRepository
+jest.mock("@/modules/seo/infrastructure/SeoRepository");
 
 describe("SeoService", () => {
     let seoService: SeoService;
-    let seoRepositoryMock: jest.Mocked<SeoRepository>;
+    let seoRepository: jest.Mocked<SeoRepository>;
+
+    const mockSeoData: SEOConfig = {
+        title: "Mock Title",
+        titleTemplate: "%s | Mock Site",
+        defaultTitle: "Mock Default Title",
+        description: "Mock Description",
+        openGraph: {
+            type: "website",
+            locale: "en_US",
+            url: "https://mock-url.com",
+            site_name: "Mock Site",
+            title: "Mock OpenGraph Title", // ✅ Diperbaiki
+            description: "Mock OpenGraph Description", // ✅ Diperbaiki
+            images: [ // ✅ Diperbaiki
+                {
+                    url: "https://mock-url.com/og-image.jpg",
+                    width: 1200,
+                    height: 630,
+                    alt: "Mock OG Image",
+                },
+            ],
+        },
+        twitter: {
+            cardType: "summary_large_image",
+            site: "@mock",
+            creator: "@mock",
+            title: "Mock Twitter Title", // ✅ Diperbaiki
+            description: "Mock Twitter Description", // ✅ Diperbaiki
+            image: "https://mock-url.com/twitter-image.jpg", // ✅ Diperbaiki
+        },
+        additionalMetaTags: [
+            { name: "robots", content: "index, follow" },
+        ],
+    };
+
 
     beforeEach(() => {
-        seoRepositoryMock = new SeoRepository() as jest.Mocked<SeoRepository>;
-        seoService = new SeoService(seoRepositoryMock); // ✅ Inject mock
-    });
-
-    afterEach(() => {
+        seoRepository = new SeoRepository() as jest.Mocked<SeoRepository>;
+        seoService = new SeoService(seoRepository);
         jest.clearAllMocks();
     });
 
-    // ✅ Positive Case: Should return correct SEO data
-    it("should return SEO configuration when repository returns data", () => {
-        // 🛠️ Arrange
-        const mockSeoData: SEOConfig = {
-            title: "Mock Title",
-            titleTemplate: "%s | Mock Website",
-            defaultTitle: "Mock Website",
-            description: "Mock description",
-            openGraph: {
-                type: "website",
-                locale: "en_US",
-                url: "https://mockwebsite.com",
-                site_name: "Mock Website",
-                title: "Mock Website",
-                description: "Mock description",
-                images: [
-                    {
-                        url: "https://mockwebsite.com/image.jpg",
-                        width: 1200,
-                        height: 630,
-                        alt: "Mock Image",
-                    },
-                ],
-            },
-            twitter: {
-                cardType: "summary_large_image",
-                site: "@mockwebsite",
-                creator: "@mockwebsite",
-                title: "Mock Website",
-                description: "Mock description",
-                image: "https://mockwebsite.com/image.jpg",
-            },
-            additionalMetaTags: [
-                { name: "theme-color", content: "#000000" },
-                { name: "msapplication-navbutton-color", content: "#000000" },
-                { name: "apple-mobile-web-app-status-bar-style", content: "#000000" },
-            ],
-        };
+    it("should return SEO data from repository (Positive Case)", async () => {
+        seoRepository.fetchSeoData.mockResolvedValue(mockSeoData);
 
-        seoRepositoryMock.getSeoConfig.mockReturnValue(mockSeoData); // ✅ Mock return value
+        const result = await seoService.getSeoData("/mock-path");
 
-        // 🎯 Act
-        const result = seoService.getSeoData();
-
-        // ✅ Assert
+        expect(seoRepository.fetchSeoData).toHaveBeenCalledWith("/mock-path");
         expect(result).toEqual(mockSeoData);
-        expect(seoRepositoryMock.getSeoConfig).toHaveBeenCalledTimes(1);
     });
 
-    // ❌ Negative Case: Should return undefined if repository fails
-    it("should return undefined when repository throws an error", () => {
-        // 🛠️ Arrange
-        seoRepositoryMock.getSeoConfig.mockImplementation(() => {
-            throw new Error("Repository failed");
-        });
+    it("should return fallback SEO data if repository fails (Negative Case)", async () => {
+        (seoRepository.fetchSeoData as jest.Mock).mockResolvedValue(null);
 
-        // 🎯 Act
-        let result;
-        try {
-            result = seoService.getSeoData();
-        } catch {
-            result = undefined;
-        }
+        const result = await seoService.getSeoData("/mock-path");
 
-        // ✅ Assert
-        expect(result).toBeUndefined();
-        expect(seoRepositoryMock.getSeoConfig).toHaveBeenCalledTimes(1);
+        expect(seoRepository.fetchSeoData).toHaveBeenCalledWith("/mock-path");
+        expect(result).toEqual(fallbackSeoData);
     });
-
-
-    // ❌ Negative Case: Should return empty SEO config if repository returns null
-    it("should return undefined when repository returns null", () => {
-        // 🛠️ Arrange
-        seoRepositoryMock.getSeoConfig.mockReturnValue(null as unknown as SEOConfig);
-
-        // 🎯 Act
-        const result = seoService.getSeoData();
-
-        // ✅ Assert
-        expect(result).toBeNull();
-        expect(seoRepositoryMock.getSeoConfig).toHaveBeenCalledTimes(1);
-    });
-
 });

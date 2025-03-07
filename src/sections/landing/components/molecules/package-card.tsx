@@ -76,7 +76,7 @@ export const PackageCard: React.FC<PackageItem> = ({
                         </div>
 
                         {/* Package Title */}
-                        <h2 className="font-bold text-primary-foreground text-lg">{title}</h2>
+                        <h2 className="font-bold text-primary-foreground text-lg text-left">{title}</h2>
 
                         {/* Departure Information */}
                         <DepartureInfo departureDate={departureDate} />
