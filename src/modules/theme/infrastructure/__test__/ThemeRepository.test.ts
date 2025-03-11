@@ -1,45 +1,70 @@
-import { ThemeRepository } from "@/modules/theme/infrastructure/ThemeRepository";
+
 import { ThemeType } from "@/modules/theme/domain/ThemeModel";
+import {ThemeRepository} from "@/modules/theme/infrastructure/ThemeRepository";
 
 describe("ThemeRepository", () => {
     let themeRepository: ThemeRepository;
 
     beforeEach(() => {
         themeRepository = new ThemeRepository();
-        Storage.prototype.getItem = jest.fn();
-        Storage.prototype.setItem = jest.fn();
+        localStorage.clear(); // Membersihkan localStorage sebelum setiap test
     });
 
-    it("should return the stored theme from localStorage", () => {
-        // ✅ Arrange
-        (localStorage.getItem as jest.Mock).mockReturnValue("dark");
+    describe("getTheme", () => {
+        it("should return 'light' as default when no theme is set (positive case)", () => {
+            // Arrange (Setup is done in beforeEach)
 
-        // ✅ Act
-        const theme = themeRepository.getTheme();
+            // Act
+            const theme = themeRepository.getTheme();
 
-        // ✅ Assert
-        expect(theme).toBe("dark");
+            // Assert
+            expect(theme).toBe("light");
+        });
+
+        it("should return the stored theme when it is set to 'dark' (positive case)", () => {
+            // Arrange
+            localStorage.setItem("user-theme", "dark");
+
+            // Act
+            const theme = themeRepository.getTheme();
+
+            // Assert
+            expect(theme).toBe("dark");
+        });
+
+        it("should return 'light' when localStorage contains an invalid value (negative case)", () => {
+            // Arrange
+            localStorage.setItem("user-theme", "invalid-theme");
+
+            // Act
+            const theme = themeRepository.getTheme();
+
+            // Assert
+            expect(theme).toBe("light");
+        });
     });
 
-    it("should return 'system' when no theme is stored", () => {
-        // ✅ Arrange
-        (localStorage.getItem as jest.Mock).mockReturnValue(null);
+    describe("setTheme", () => {
+        it("should correctly set the theme to 'dark' (positive case)", () => {
+            // Arrange
+            const theme: ThemeType = "dark";
 
-        // ✅ Act
-        const theme = themeRepository.getTheme();
+            // Act
+            themeRepository.setTheme(theme);
 
-        // ✅ Assert
-        expect(theme).toBe("system");
-    });
+            // Assert
+            expect(localStorage.getItem("user-theme")).toBe("dark");
+        });
 
-    it("should store the theme in localStorage", () => {
-        // ✅ Arrange
-        const newTheme: ThemeType = "light";
+        it("should correctly set the theme to 'light' (positive case)", () => {
+            // Arrange
+            const theme: ThemeType = "light";
 
-        // ✅ Act
-        themeRepository.setTheme(newTheme);
+            // Act
+            themeRepository.setTheme(theme);
 
-        // ✅ Assert
-        expect(localStorage.setItem).toHaveBeenCalledWith("user-theme", "light");
+            // Assert
+            expect(localStorage.getItem("user-theme")).toBe("light");
+        });
     });
 });

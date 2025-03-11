@@ -2,7 +2,6 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { ThemeProvider, useThemeContext } from "@/sections/theme/context/ThemeContext";
 import { ThemeService } from "@/modules/theme/application/ThemeService";
-import { ThemeType } from "@/modules/theme/domain/ThemeModel";
 import { ThemeRepository } from "@/modules/theme/infrastructure/ThemeRepository";
 
 jest.mock("@/modules/theme/application/ThemeService");

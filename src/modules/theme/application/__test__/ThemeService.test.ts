@@ -15,23 +15,23 @@ describe("ThemeService", () => {
 
     it("should return the current theme from ThemeRepository", () => {
         // ✅ Arrange
-        themeRepositoryMock.getTheme.mockReturnValue("dark");
+        themeRepositoryMock.getTheme.mockReturnValue("light");
 
         // ✅ Act
         const theme = themeService.getTheme();
 
         // ✅ Assert
-        expect(theme).toBe("dark");
+        expect(theme).toBe("light");
     });
 
-    it("should call setTheme in ThemeRepository", () => {
+    it("should call setTheme dark in ThemeRepository", () => {
         // ✅ Arrange
-        const newTheme: ThemeType = "light";
+        const newTheme: ThemeType = "dark";
 
         // ✅ Act
         themeService.setTheme(newTheme);
 
         // ✅ Assert
-        expect(themeRepositoryMock.setTheme).toHaveBeenCalledWith("light");
+        expect(themeRepositoryMock.setTheme).toHaveBeenCalledWith("dark");
     });
 });
