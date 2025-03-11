@@ -28,7 +28,7 @@ export default function Navbar() {
     const router = useRouter();
 
     const handleLogin = () => {
-        router.push("/login");
+        router.push("/auth/login");
     };
 
     const toggleMobileMenu = () => {
@@ -37,7 +37,7 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="bg-white shadow-md">
+            <header className="bg-white shadow-md sticky top-0 z-50">
                 <div className="container max-w-screen-xl mx-auto flex justify-between items-center h-[62px] px-6 md:px-10 lg:px-16">
                     {/* Logo */}
                     <Link href="/" aria-label="Home" className="flex items-center">

@@ -57,7 +57,7 @@ export default function BottomNavigation() {
     return (
         <nav
             ref={navRef}
-            className="fixed bottom-0 left-0 right-0 bg-white shadow-md md:hidden rounded-t-3xl"
+            className="fixed bottom-0 left-0 right-0 bg-white shadow-md md:hidden rounded-t-3xl z-50"
         >
             <div className="relative">
                 {/* Indicator untuk menu aktif */}

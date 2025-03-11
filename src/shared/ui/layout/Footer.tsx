@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
         <div style={screenType !== "desktop" ? {paddingBottom: "3rem"} : {}}>
 
             <footer
-                className="flex flex-col items-center px-52 py-12 bg-teal-600 max-md:px-10 max-md:py-12 max-sm:px-5 max-sm:pt-8"
+                className="flex flex-col items-center px-52 py-12 bg-teal-600 max-md:px-10 max-md:py-12 max-sm:px-5 max-sm:pt-8  sticky bottom-0"
                 aria-label="Site footer"
             >
                 <div
