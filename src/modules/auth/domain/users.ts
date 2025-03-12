@@ -6,6 +6,7 @@ export interface Users {
     firstName: string | null;
     lastName: string | null;
     username: string | null;
+    phone: string | null;
     email: string;
     emailVerified: Date | null;
     image: string | null;
@@ -20,6 +21,7 @@ export interface AuthUser extends User {
     firstName?: string | null;
     lastName?: string | null;
     username?: string | null;
+    phone?: string | null;
     email: string;
     emailVerified?: Date | null;
     image?: string | null;

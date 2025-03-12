@@ -1,0 +1,276 @@
+<testsuites id="" name="" tests="6" failures="6" skipped="0" errors="0" time="82.05218800000002">
+<testsuite name="sections\seo\components\test\e2e\seo.spec.ts" timestamp="2025-03-07T04:07:25.814Z" hostname="chromium" tests="1" failures="1" skipped="0" time="13.542" errors="0">
+<testcase name="SEO Component › should apply correct SEO metadata" classname="sections\seo\components\test\e2e\seo.spec.ts" time="13.542">
+<failure message="seo.spec.ts:5:9 should apply correct SEO metadata" type="FAILURE">
+<![CDATA[  [chromium] › sections\seo\components\test\e2e\seo.spec.ts:5:9 › SEO Component › should apply correct SEO metadata 
+
+    Error: Timed out 5000ms waiting for expect(locator).toHaveTitle(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /Mock Title/
+    Received string:  ""
+    Call log:
+      - expect.toHaveTitle with timeout 5000ms
+      - waiting for locator(':root')
+        3 × locator resolved to <html lang="en" class="__variable_4a8659 light">…</html>
+          - unexpected value "Goumrah - Your Trusted Travel Partner"
+        5 × locator resolved to <html id="__next_error__">…</html>
+          - unexpected value ""
+
+
+      14 |
+      15 |         // 🔹 Periksa apakah title sudah sesuai
+    > 16 |         await expect(page).toHaveTitle(/Mock Title/);
+         |                            ^
+      17 |
+      18 |         // 🔹 Periksa meta tag
+      19 |         await expect(page.locator("meta[name='description']")).toHaveAttribute(
+        at D:\Project\Website\goumrah-app\src\sections\seo\components\test\e2e\seo.spec.ts:16:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Actual title: Goumrah - Your Trusted Travel Partner
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="sections\seo\components\test\e2e\seo.spec.ts" timestamp="2025-03-07T04:07:25.814Z" hostname="firefox" tests="1" failures="1" skipped="0" time="23.465" errors="0">
+<testcase name="SEO Component › should apply correct SEO metadata" classname="sections\seo\components\test\e2e\seo.spec.ts" time="23.465">
+<failure message="seo.spec.ts:5:9 should apply correct SEO metadata" type="FAILURE">
+<![CDATA[  [firefox] › sections\seo\components\test\e2e\seo.spec.ts:5:9 › SEO Component › should apply correct SEO metadata 
+
+    Error: Timed out 5000ms waiting for expect(locator).toHaveTitle(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /Mock Title/
+    Received string:  ""
+    Call log:
+      - expect.toHaveTitle with timeout 5000ms
+      - waiting for locator(':root')
+        5 × locator resolved to <html lang="en" class="__variable_4a8659 light">…</html>
+          - unexpected value "Goumrah - Your Trusted Travel Partner"
+        3 × locator resolved to <html id="__next_error__">…</html>
+          - unexpected value ""
+
+
+      14 |
+      15 |         // 🔹 Periksa apakah title sudah sesuai
+    > 16 |         await expect(page).toHaveTitle(/Mock Title/);
+         |                            ^
+      17 |
+      18 |         // 🔹 Periksa meta tag
+      19 |         await expect(page.locator("meta[name='description']")).toHaveAttribute(
+        at D:\Project\Website\goumrah-app\src\sections\seo\components\test\e2e\seo.spec.ts:16:28
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Actual title: Goumrah - Your Trusted Travel Partner
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-firefox\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="sections\seo\components\test\e2e\seo.spec.ts" timestamp="2025-03-07T04:07:25.814Z" hostname="webkit" tests="1" failures="1" skipped="0" time="22.759" errors="0">
+<testcase name="SEO Component › should apply correct SEO metadata" classname="sections\seo\components\test\e2e\seo.spec.ts" time="22.759">
+<failure message="seo.spec.ts:5:9 should apply correct SEO metadata" type="FAILURE">
+<![CDATA[  [webkit] › sections\seo\components\test\e2e\seo.spec.ts:5:9 › SEO Component › should apply correct SEO metadata 
+
+    Error: Timed out 5000ms waiting for expect(locator).toHaveTitle(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /Mock Title/
+    Received string:  ""
+    Call log:
+      - expect.toHaveTitle with timeout 5000ms
+      - waiting for locator(':root')
+        4 × locator resolved to <html lang="en" class="__variable_4a8659 light">…</html>
+          - unexpected value "Goumrah - Your Trusted Travel Partner"
+        - locator resolved to <html id="__next_error__">…</html>
+        - unexpected value ""
+
+
+      14 |
+      15 |         // 🔹 Periksa apakah title sudah sesuai
+    > 16 |         await expect(page).toHaveTitle(/Mock Title/);
+         |                            ^
+      17 |
+      18 |         // 🔹 Periksa meta tag
+      19 |         await expect(page.locator("meta[name='description']")).toHaveAttribute(
+        at D:\Project\Website\goumrah-app\src\sections\seo\components\test\e2e\seo.spec.ts:16:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Actual title: Goumrah - Your Trusted Travel Partner
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-webkit\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="sections\seo\components\test\e2e\seo.spec.ts" timestamp="2025-03-07T04:07:25.814Z" hostname="Mobile Chrome (Pixel 5)" tests="1" failures="1" skipped="0" time="15.939" errors="0">
+<testcase name="SEO Component › should apply correct SEO metadata" classname="sections\seo\components\test\e2e\seo.spec.ts" time="15.939">
+<failure message="seo.spec.ts:5:9 should apply correct SEO metadata" type="FAILURE">
+<![CDATA[  [Mobile Chrome (Pixel 5)] › sections\seo\components\test\e2e\seo.spec.ts:5:9 › SEO Component › should apply correct SEO metadata 
+
+    Error: Timed out 5000ms waiting for expect(locator).toHaveTitle(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /Mock Title/
+    Received string:  ""
+    Call log:
+      - expect.toHaveTitle with timeout 5000ms
+      - waiting for locator(':root')
+        4 × locator resolved to <html lang="en" class="__variable_4a8659 light">…</html>
+          - unexpected value "Goumrah - Your Trusted Travel Partner"
+        4 × locator resolved to <html id="__next_error__">…</html>
+          - unexpected value ""
+
+
+      14 |
+      15 |         // 🔹 Periksa apakah title sudah sesuai
+    > 16 |         await expect(page).toHaveTitle(/Mock Title/);
+         |                            ^
+      17 |
+      18 |         // 🔹 Periksa meta tag
+      19 |         await expect(page.locator("meta[name='description']")).toHaveAttribute(
+        at D:\Project\Website\goumrah-app\src\sections\seo\components\test\e2e\seo.spec.ts:16:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Pixel-5-\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Pixel-5-\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Actual title: Goumrah - Your Trusted Travel Partner
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Pixel-5-\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Pixel-5-\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="sections\seo\components\test\e2e\seo.spec.ts" timestamp="2025-03-07T04:07:25.814Z" hostname="Mobile Chrome (Samsung Galaxy S23 Ultra)" tests="1" failures="1" skipped="0" time="25.027" errors="0">
+<testcase name="SEO Component › should apply correct SEO metadata" classname="sections\seo\components\test\e2e\seo.spec.ts" time="25.027">
+<failure message="seo.spec.ts:5:9 should apply correct SEO metadata" type="FAILURE">
+<![CDATA[  [Mobile Chrome (Samsung Galaxy S23 Ultra)] › sections\seo\components\test\e2e\seo.spec.ts:5:9 › SEO Component › should apply correct SEO metadata 
+
+    Error: Timed out 5000ms waiting for expect(locator).toHaveTitle(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /Mock Title/
+    Received string:  ""
+    Call log:
+      - expect.toHaveTitle with timeout 5000ms
+      - waiting for locator(':root')
+        4 × locator resolved to <html lang="en" class="__variable_4a8659 light">…</html>
+          - unexpected value "Goumrah - Your Trusted Travel Partner"
+        4 × locator resolved to <html id="__next_error__">…</html>
+          - unexpected value ""
+
+
+      14 |
+      15 |         // 🔹 Periksa apakah title sudah sesuai
+    > 16 |         await expect(page).toHaveTitle(/Mock Title/);
+         |                            ^
+      17 |
+      18 |         // 🔹 Periksa meta tag
+      19 |         await expect(page.locator("meta[name='description']")).toHaveAttribute(
+        at D:\Project\Website\goumrah-app\src\sections\seo\components\test\e2e\seo.spec.ts:16:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Samsung-Galaxy-S23-Ultra-\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Samsung-Galaxy-S23-Ultra-\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Actual title: Goumrah - Your Trusted Travel Partner
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Samsung-Galaxy-S23-Ultra-\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Samsung-Galaxy-S23-Ultra-\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="sections\seo\components\test\e2e\seo.spec.ts" timestamp="2025-03-07T04:07:25.814Z" hostname="Mobile Chrome (Samsung Galaxy Z Fold 5)" tests="1" failures="1" skipped="0" time="17.977" errors="0">
+<testcase name="SEO Component › should apply correct SEO metadata" classname="sections\seo\components\test\e2e\seo.spec.ts" time="17.977">
+<failure message="seo.spec.ts:5:9 should apply correct SEO metadata" type="FAILURE">
+<![CDATA[  [Mobile Chrome (Samsung Galaxy Z Fold 5)] › sections\seo\components\test\e2e\seo.spec.ts:5:9 › SEO Component › should apply correct SEO metadata 
+
+    Error: Timed out 5000ms waiting for expect(locator).toHaveTitle(expected)
+
+    Locator: locator(':root')
+    Expected pattern: /Mock Title/
+    Received string:  ""
+    Call log:
+      - expect.toHaveTitle with timeout 5000ms
+      - waiting for locator(':root')
+        8 × locator resolved to <html id="__next_error__">…</html>
+          - unexpected value ""
+
+
+      14 |
+      15 |         // 🔹 Periksa apakah title sudah sesuai
+    > 16 |         await expect(page).toHaveTitle(/Mock Title/);
+         |                            ^
+      17 |
+      18 |         // 🔹 Periksa meta tag
+      19 |         await expect(page.locator("meta[name='description']")).toHaveAttribute(
+        at D:\Project\Website\goumrah-app\src\sections\seo\components\test\e2e\seo.spec.ts:16:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Samsung-Galaxy-Z-Fold-5-\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Samsung-Galaxy-Z-Fold-5-\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Actual title: 
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Samsung-Galaxy-Z-Fold-5-\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\sections-seo-components-te-5d228--apply-correct-SEO-metadata-Mobile-Chrome-Samsung-Galaxy-Z-Fold-5-\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

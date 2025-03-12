@@ -23,8 +23,8 @@ const seoConfig: SEOConfig = {
     },
     twitter: {
         cardType: "summary_large_image",
-        site: "@mywebsite",
-        creator: "@mywebsite",
+        site: "@goumrah.id",
+        creator: "@goumrah.id",
         title: "My Website",
         description: "This is the default description of my website.",
         image: "https://www.mywebsite.com/og-image.jpg",

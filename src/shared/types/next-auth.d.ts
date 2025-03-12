@@ -1,5 +1,3 @@
-import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
-import { JWT } from "next-auth/jwt";
 import { Role } from "@/modules/auth/domain/users"; // Adjust path if needed
 
 declare module "next-auth" {

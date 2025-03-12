@@ -1,57 +1,13 @@
 import { prisma } from "@/shared/libs/prisma";
 import { Users } from "@/modules/auth/domain/users";
 import { Role } from "@/modules/auth/domain/role";
-import { Role as PrismaRole, User as PrismaUser } from "@prisma/client";
+import { mapPrismaUserToUsers } from "@/modules/auth/infrastructure/utils/userHelper";
+import { Prisma } from "@prisma/client";
 
 /**
  * UsersRepository - Handles all database operations related to users.
  */
 export class UsersRepository {
-    /**
-     * Creates a new user in the database.
-     * @param {Partial<Users>} data - Users data to create a new user.
-     * @returns {Promise<Users>} - The newly created user.
-     * @throws {Error} - If user creation fails.
-     */
-    async createUsers(data: Omit<Users, "id"> & { email: string }): Promise<Users> {
-        try {
-            const newUser = await prisma.user.create({ data });
-
-            return { ...newUser, role: newUser.role as Role };
-        } catch (error) {
-            console.error("Error creating user:", error);
-            throw new Error("Failed to create user.");
-        }
-    }
-
-
-    /**
-     * Retrieves a user based on a specific field (ID, Email, or Username).
-     * @param {"id" | "email" | "username"} field - The field to search by.
-     * @param {string} value - The value to match.
-     * @returns {Promise<Users | null>} - The found user or null if not found.
-     */
-    async getUsersByField(field: "id" | "email" | "username", value: string): Promise<Users | null> {
-        try {
-            let user: PrismaUser | null = null;
-
-            if (field === "id") {
-                user = await prisma.user.findUnique({ where: { id: value } });
-            } else if (field === "email") {
-                user = await prisma.user.findUnique({ where: { email: value } });
-            } else if (field === "username") {
-                user = await prisma.user.findFirst({ where: { username: value } }); // findFirst() untuk username
-            }
-
-            return user ? { ...user, role: user.role as Role } : null;
-        } catch (error) {
-            console.error(`Error fetching user by ${field}:`, error);
-            return null;
-        }
-    }
-
-
-
     /**
      * Retrieves all users from the database, with an optional role filter.
      * @param {Role} [role] - Optional role to filter users.
@@ -59,14 +15,85 @@ export class UsersRepository {
      */
     async getAllUsers(role?: Role): Promise<Users[]> {
         try {
-            const users: PrismaUser[] = await prisma.user.findMany({
-                where: role ? { role: role as PrismaRole } : undefined,
+            const users = await prisma.user.findMany({
+                where: role ? { role } : undefined,
             });
 
-            return users.map((user: PrismaUser) => ({ ...user, role: user.role as Role }));
+            // 🔥 Fix: Hapus null values sebelum dikembalikan
+            return users.map(mapPrismaUserToUsers).filter((user): user is Users => user !== null);
         } catch (error) {
             console.error("Error fetching users:", error);
             return [];
+        }
+    }
+
+
+    /**
+     * Retrieves a user based on a specific field (ID, Email, Username, Phone).
+     * @param {"email" | "username" | "phone"} field - The field to search by.
+     * @param {string} value - The value to match.
+     * @returns {Promise<Users | null>} - The found user or null if not found.
+     */
+    async getUsersByField(field: "email" | "username" | "phone", value: string): Promise<Users | null> {
+        try {
+            let whereCondition: Prisma.UserWhereUniqueInput | Prisma.UserWhereInput = {};
+
+            if (field === "email") {
+                whereCondition = { email: value };
+            } else if (field === "phone") {
+                whereCondition = { phone: value };
+            } else if (field === "username") {
+                whereCondition = { username: value };
+            } else {
+                throw new Error(`Invalid field: ${field}`);
+            }
+
+            // ✅ Pastikan password diambil dari database
+            const user = await prisma.user.findFirst({
+                where: whereCondition,
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    username: true,
+                    phone: true,
+                    email: true,
+                    emailVerified: true,
+                    image: true,
+                    password: true, // 🔥 Pastikan ini ada
+                    role: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+            });
+
+            return mapPrismaUserToUsers(user);
+        } catch (error) {
+            console.error(`Error fetching user by ${field}:`, error);
+            return null;
+        }
+    }
+
+
+    /**
+     * Creates a new user in the database.
+     * @param {Partial<Users>} data - Users data to create a new user.
+     * @returns {Promise<Users>} - The newly created user.
+     * @throws {Error} - If user creation fails.
+     */
+    async createUsers(data: Omit<Users, "id" | "createdAt" | "updatedAt"> & { password: string }): Promise<Users> {
+        try {
+            const newUser = await prisma.user.create({
+                data,
+            });
+
+            const mappedUser = mapPrismaUserToUsers(newUser);
+            if (!mappedUser) throw new Error("Failed to map created user.");
+
+            return mappedUser;
+        } catch (error) {
+            console.error("Error creating user:", error);
+            throw new Error("Failed to create user.");
         }
     }
 
@@ -78,17 +105,20 @@ export class UsersRepository {
      */
     async updateUsers(id: string, data: Partial<Users>): Promise<Users | null> {
         try {
-            const updatedUser: PrismaUser = await prisma.user.update({
+            delete data.password; // 🔥 Hapus password dari objek
+
+            const updatedUser = await prisma.user.update({
                 where: { id },
                 data,
             });
 
-            return { ...updatedUser, role: updatedUser.role as Role };
+            return mapPrismaUserToUsers(updatedUser);
         } catch (error) {
             console.error("Error updating user:", error);
             return null;
         }
     }
+
 
     /**
      * Deletes a user from the database by ID.

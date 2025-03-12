@@ -1,7 +1,7 @@
 function Get-CleanTree {
     param (
         [string]$Path = ".",
-        [string[]]$Exclude = @("node_modules", ".idea", ".next", ".git", "coverage"),
+        [string[]]$Exclude = @("node_modules", ".idea", ".next", ".git", "coverage", "prisma\migrations", "test-results", "public"),
         [int]$Depth = 10,
         [string]$Indent = ""
     )

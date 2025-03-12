@@ -1,12 +1,10 @@
-import React from "react";
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { Plus_Jakarta_Sans } from "next/font/google";
-
 import { LandingProvider } from "@/sections/landing/context/LandingContext";
 import { ThemeProvider } from "@/context/ThemeProvider";
-import Navbar from "@/shared/ui/layout/Navbar";
-import ReactQueryProvider from "@/context/ReactQueryProvider"; // ⬅️ Pastikan import
+import ReactQueryProvider from "@/context/ReactQueryProvider";
+import SessionProviderWrapper from "@/context/SessionProvider"; // Import new wrapper
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     subsets: ["latin"],
@@ -14,7 +12,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
     variable: "--font-plus-jakarta",
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://www.goumrah.id"; // ✅ Pastikan default
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://www.goumrah.id";
 
 export const metadata: Metadata = {
     title: "Goumrah - Your Trusted Travel Partner",
@@ -31,18 +29,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" className={plusJakartaSans.variable}>
         <body className={plusJakartaSans.variable}>
-        <ReactQueryProvider> {/* ⬅️ Pindahkan ke sini agar seluruh aplikasi punya akses */}
-            <ThemeProvider>
-                <LandingProvider>
-                    {/* Navbar is always at the top */}
-                    <Navbar />
-
-                    {/* Main Content Area */}
-                    {children}
-
-                </LandingProvider>
-            </ThemeProvider>
-        </ReactQueryProvider>
+        <SessionProviderWrapper> {/* Wrap session provider in a separate client component */}
+            <ReactQueryProvider>
+                <ThemeProvider>
+                    <LandingProvider>{children}</LandingProvider>
+                </ThemeProvider>
+            </ReactQueryProvider>
+        </SessionProviderWrapper>
         </body>
         </html>
     );
