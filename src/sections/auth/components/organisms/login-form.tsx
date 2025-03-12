@@ -9,7 +9,8 @@ import Divider from "@/sections/auth/components/molecoles/devider";
 import SocialIcons from "@/sections/auth/components/molecoles/social-login";
 import { Button } from "@/sections/landing/components/templates/button";
 import LogoDark from "@/public/icons/logo/dark-logo.svg";
-import { z } from "zod"; // ✅ Import Zod for validation
+import { z } from "zod";
+import Link from "next/link";
 
 // ✅ Define Zod schema for validation
 const loginSchema = z.object({
@@ -42,44 +43,61 @@ const LoginForm: React.FC = () => {
         }));
     };
 
+    // ✅ Extracted function for validation
+    const validateForm = () => {
+        try {
+            loginSchema.parse(formData);
+            return true;
+        } catch (err) {
+            if (err instanceof z.ZodError) {
+                setError(err.errors[0]?.message || "Invalid input");
+            } else {
+                setError("An unexpected error occurred");
+            }
+            return false;
+        }
+    };
+
+    // ✅ Extracted function for authentication
+    const authenticateUser = async () => {
+        const credentials = {
+            redirect: false,
+            identifier: formData.identifier,
+            password: formData.password,
+        };
+
+        console.log("🔹 Sending credentials:", credentials);
+
+        const result = await signIn("credentials", credentials);
+        console.log("🟡 API Response:", result);
+
+        if (result?.error) {
+            console.error("❌ Login Failed:", result.error);
+            setError(
+                result.error === "CredentialsSignin"
+                    ? "Incorrect email, phone number, or password."
+                    : "Login failed. Please try again."
+            );
+
+            setFormData({
+                identifier: "",
+                password: "",
+                rememberMe: false,
+            });
+        } else {
+            console.log("✅ Login Successful! Redirecting to dashboard...");
+            router.push("/dashboard");
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null); // Reset error message
 
-        try {
-            // ✅ Validasi input menggunakan Zod
-            loginSchema.parse(formData);
-            console.log("✅ Validation Passed:", formData);
-
-            const credentials = {
-                redirect: false,
-                identifier: formData.identifier, // 🔥 Kirim identifier sesuai backend
-                password: formData.password,
-            };
-
-            console.log("🔹 Sending credentials:", credentials);
-
-            const result = await signIn("credentials", credentials);
-            console.log("🟡 API Response:", result);
-
-            if (result?.error) {
-                console.error("❌ Login Failed:", result.error);
-                setError(result.error);
-            } else {
-                console.log("✅ Login Successful! Redirecting to dashboard...");
-                router.push("/dashboard"); // Redirect user
-            }
-        } catch (err) {
-            if (err instanceof z.ZodError) {
-                console.error("❌ Validation Error:", err.errors);
-                setError(err.errors[0]?.message || "Invalid input");
-            } else {
-                console.error("❌ Unexpected Error:", err);
-                setError("An unexpected error occurred");
-            }
+        if (validateForm()) {
+            await authenticateUser();
         }
     };
-
 
     return (
         <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md flex flex-col items-center justify-center min-h-[400px]">
@@ -92,7 +110,7 @@ const LoginForm: React.FC = () => {
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                 <div className="flex flex-col gap-4">
                     <InputField
-                        type="text" // ✅ Accepts both email & phone
+                        type="text"
                         placeholder="Email, Phone atau Username"
                         id="identifier"
                         name="identifier"
@@ -128,14 +146,8 @@ const LoginForm: React.FC = () => {
                 <Button type="submit">Login</Button>
 
                 <div className="text-base text-center text-slate-800 text-opacity-70">
-                    <span>New on our platform? </span>
-                    <button
-                        type="button"
-                        className="text-indigo-500 cursor-pointer"
-                        onClick={() => router.push("/auth/register")}
-                    >
-                        Create an account
-                    </button>
+                    <span>Belum memiliki akun? </span>
+                    <Link href="/auth/register" className="text-indigo-500 cursor-pointer">Daftar disini.</Link>
                 </div>
 
                 <Divider text="or" />

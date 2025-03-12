@@ -1,6 +1,6 @@
 import { Users } from "@/modules/auth/domain/users";
 import { Role } from "@/modules/auth/domain/role";
-import { Prisma } from "@prisma/client"; // ✅ Import Prisma
+import { Prisma } from "@prisma/client"; //
 
 // ✅ Pastikan kompatibilitas Prisma
 export const mapPrismaUserToUsers = (prismaUser: Prisma.UserGetPayload<false> | null): Users | null => {
@@ -15,7 +15,7 @@ export const mapPrismaUserToUsers = (prismaUser: Prisma.UserGetPayload<false> | 
         email: prismaUser.email,
         emailVerified: prismaUser.emailVerified ?? null,
         image: prismaUser.image ?? null,
-        password: prismaUser.password ?? null, // 🔒 Jangan pernah mengembalikan password
+        password: prismaUser.password ?? null,
         role: prismaUser.role as Role,
         createdAt: prismaUser.createdAt,
         updatedAt: prismaUser.updatedAt,

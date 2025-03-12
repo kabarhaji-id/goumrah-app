@@ -1,4 +1,6 @@
-import { Role } from "@/modules/auth/domain/users"; // Adjust path if needed
+import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import { Role } from "@/modules/auth/domain/users"; // Sesuaikan path
 
 declare module "next-auth" {
     interface Session {
@@ -6,6 +8,7 @@ declare module "next-auth" {
             id: string;
             role: Role;
         } & DefaultSession["user"];
+        accessToken?: string; // ✅ Tambahkan accessToken ke dalam session
     }
 
     interface User extends DefaultUser {
@@ -19,5 +22,6 @@ declare module "next-auth/jwt" {
         id: string;
         role: Role;
         exp: number;
+        accessToken?: string; // ✅ Tambahkan accessToken ke dalam JWT
     }
 }

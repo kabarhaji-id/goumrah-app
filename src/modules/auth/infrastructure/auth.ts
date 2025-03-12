@@ -5,7 +5,12 @@ import { UsersRepository } from "@/modules/auth/infrastructure/usersRepository";
 import { Users } from "@/modules/auth/domain/users";
 import { JWT } from "next-auth/jwt";
 import { loginSchema } from "@/modules/auth/infrastructure/utils/authValidation";
-import { validatePassword } from "@/modules/auth/infrastructure/utils/sessionUtils";
+import {
+    comparePassword,
+    generateJWTToken,
+    updateSessionWithToken
+} from "@/modules/auth/infrastructure/utils/sessionUtils";
+import {InvalidPasswordError, UnauthorizedError, UserNotFoundError} from "@/modules/auth/domain/authExceptions";
 
 const usersRepository = new UsersRepository();
 
@@ -24,7 +29,7 @@ export const authOptions: NextAuthOptions = {
 
                     if (!credentials?.identifier || !credentials?.password) {
                         console.error("❌ Missing credentials");
-                        return null;
+                        throw new UserNotFoundError;
                     }
 
                     // ✅ Validasi menggunakan Zod
@@ -54,14 +59,14 @@ export const authOptions: NextAuthOptions = {
 
                     if (!user || !user.password) {
                         console.error("❌ User not found or missing password");
-                        return null;
+                        throw new UserNotFoundError;
                     }
 
                     // ✅ Validasi password dengan bcrypt
-                    const passwordMatch = await validatePassword(password, user.password);
+                    const passwordMatch = await comparePassword(password, user.password);
                     if (!passwordMatch) {
                         console.error("❌ Incorrect password");
-                        return null;
+                        throw new InvalidPasswordError;
                     } else {
                         console.error("Correct password");
                     }
@@ -84,7 +89,7 @@ export const authOptions: NextAuthOptions = {
                     } as Users;
                 } catch (error) {
                     console.error("❌ Authorization Error:", error);
-                    return null;
+                    throw new UnauthorizedError;
                 }
             },
         }),
@@ -92,24 +97,14 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, user }: { token: JWT; user?: Users | NextAuthUser | AdapterUser }) {
             if (user) {
-                console.log("🔹 Generating JWT Token for User:", user);
-                token.id = user.id;
-                token.name = `${(user as Users).firstName ?? ""} ${(user as Users).lastName ?? ""}`.trim();
-                token.email = user.email;
-                token.phone = (user as Users).phone;
-                token.role = (user as Users).role;
+                token = generateJWTToken(token, user as Users);
+                token.accessToken = token.id; // ✅ Simpan accessToken dalam JWT
             }
             return token;
         },
         async session({ session, token }) {
-            console.log("🔹 Updating session with token:", token);
-            if (session.user) {
-                session.user.id = token.id;
-                session.user.email = token.email;
-                session.user.phone = token.phone;
-                session.user.role = token.role;
-            }
-            return session;
+            session.accessToken = token.accessToken; // ✅ Tambahkan accessToken ke session
+            return updateSessionWithToken(session, token);
         },
     },
     session: { strategy: "jwt" },
