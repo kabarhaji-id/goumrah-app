@@ -1,22 +1,21 @@
 import React from "react";
 import {PageWrapper} from "@/shared/ui/layout/page-wrapper";
-import LoginView from "@/sections/auth/pages/login";
+import RegisterView from "@/sections/auth/pages/register";
 import {Container} from "@/shared/ui/layout/components/container";
 
 
-const LoginPage = () => {
+const RegisterPage = () => {
 
     return (
 
         <PageWrapper>
             <Container className=" h-full text-center text-2xl">
-                <LoginView />
+                <RegisterView />
             </Container>
-
         </PageWrapper>
     )
 
 
 };
 
-export default LoginPage;
+export default RegisterPage;

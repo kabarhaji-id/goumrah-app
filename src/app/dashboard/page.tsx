@@ -4,10 +4,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import {Container} from "@/shared/ui/layout/components/container";
-import Hero from "@/sections/landing/components/organisms/Hero";
-import {SinglePackages} from "@/sections/landing/components/organisms/SinglePackages";
-import SliderPackages from "@/sections/landing/components/organisms/SliderPackages";
-import WhyChooseUs from "@/sections/landing/components/organisms/WhyChooseUs";
 import {PageWrapper} from "@/shared/ui/layout/page-wrapper";
 
 const Dashboard = () => {
@@ -31,7 +27,7 @@ const Dashboard = () => {
         <PageWrapper>
             <Container className=" h-full text-center text-2xl">
                 <h1>Welcome to the Dashboard</h1>
-                <p>User: {session?.user?.email || session?.user?.phone || "No email/phone found"}</p>
+                <p>User: {session?.user?.email || "No email/phone found"}</p>
             </Container>
         </PageWrapper>
     );
