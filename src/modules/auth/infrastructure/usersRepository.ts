@@ -5,7 +5,8 @@ import { mapPrismaUserToUsers } from "@/modules/auth/infrastructure/utils/userHe
 import { Prisma } from "@prisma/client";
 
 /**
- * UsersRepository - Handles all database operations related to users.
+ * UsersRepository: Responsible for handling database operations related to the User entity.
+ * This includes finding a user, create user, get all user updating the user's token, and clearing the token on logout.
  */
 export class UsersRepository {
     /**
@@ -19,13 +20,13 @@ export class UsersRepository {
                 where: role ? { role } : undefined,
             });
 
-            // 🔥 Fix: Hapus null values sebelum dikembalikan
             return users.map(mapPrismaUserToUsers).filter((user): user is Users => user !== null);
         } catch (error) {
             console.error("Error fetching users:", error);
             return [];
         }
     }
+
 
 
     /**
@@ -36,43 +37,55 @@ export class UsersRepository {
      */
     async getUsersByField(field: "email" | "username" | "phone", value: string): Promise<Users | null> {
         try {
-            let whereCondition: Prisma.UserWhereUniqueInput | Prisma.UserWhereInput = {};
+            const whereCondition: Prisma.UserWhereUniqueInput | Prisma.UserWhereInput =
+                field === "email" ? { email: value }
+                    : field === "phone" ? { phone: value }
+                        : field === "username" ? { username: value }
+                            : {};
 
-            if (field === "email") {
-                whereCondition = { email: value };
-            } else if (field === "phone") {
-                whereCondition = { phone: value };
-            } else if (field === "username") {
-                whereCondition = { username: value };
-            } else {
-                throw new Error(`Invalid field: ${field}`);
-            }
-
-            // ✅ Pastikan password diambil dari database
             const user = await prisma.user.findFirst({
                 where: whereCondition,
-                select: {
-                    id: true,
-                    firstName: true,
-                    lastName: true,
-                    username: true,
-                    phone: true,
-                    email: true,
-                    emailVerified: true,
-                    image: true,
-                    password: true, // 🔥 Pastikan ini ada
-                    role: true,
-                    createdAt: true,
-                    updatedAt: true,
-                },
             });
 
-            return mapPrismaUserToUsers(user);
+            return user ? { ...user, role: user.role as Role } : null;
         } catch (error) {
             console.error(`Error fetching user by ${field}:`, error);
             return null;
         }
     }
+
+
+    /**
+     * ✅ Save JWT Token to Database
+     * This function is called after successful login to store the user's JWT token in the database.
+     * @param userId - The ID of the authenticated user.
+     * @param token - The generated JWT token.
+     * @returns The updated user object with the saved token.
+     */
+    async updateUserToken(userId: string, token: string): Promise<Users | null> {
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: { token },
+        });
+
+        return updatedUser ? mapPrismaUserToUsers(updatedUser) : null;
+    }
+
+    /**
+     * ✅ Clear User Token on Logout
+     * This function is called during logout to clear the user's token from the database.
+     * @param userId - The ID of the user logging out.
+     * @returns The updated user object with the token field set to null.
+     */
+    async clearUserToken(userId: string): Promise<Users | null> {
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: { token: null },
+        });
+
+        return updatedUser ? mapPrismaUserToUsers(updatedUser) : null;
+    }
+
 
 
     /**
@@ -84,13 +97,14 @@ export class UsersRepository {
     async createUsers(data: Omit<Users, "id" | "createdAt" | "updatedAt"> & { password: string }): Promise<Users> {
         try {
             const newUser = await prisma.user.create({
-                data,
+                data: {
+                    ...data,
+                    phone: data.phone ?? null, // ✅ Mengatasi undefined ke null
+                    role: data.role as Role, // 🔥 Konversi role
+                },
             });
 
-            const mappedUser = mapPrismaUserToUsers(newUser);
-            if (!mappedUser) throw new Error("Failed to map created user.");
-
-            return mappedUser;
+            return { ...newUser, role: newUser.role as Role };
         } catch (error) {
             console.error("Error creating user:", error);
             throw new Error("Failed to create user.");

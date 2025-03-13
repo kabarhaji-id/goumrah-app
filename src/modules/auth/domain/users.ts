@@ -1,5 +1,4 @@
 import { Role } from "./role";
-import {User} from "next-auth";
 
 export interface Users {
     id: string;
@@ -11,19 +10,15 @@ export interface Users {
     emailVerified: Date | null;
     image: string | null;
     password: string | null;
+    token: string | null;
     role: Role;
     createdAt: Date;
     updatedAt: Date;
 }
 
-export interface AuthUser extends User {
-    id: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    username?: string | null;
-    phone?: string | null;
-    email: string;
-    emailVerified?: Date | null;
-    image?: string | null;
-    role: Role;
+
+export interface AuthUser extends Users {
+
+    iat: number; // JWT Issued At ✅
+    exp: number; // JWT Expiration ✅
 }

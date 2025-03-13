@@ -33,10 +33,12 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
+  token         String?
   role          Role            @default(REGISTERED_USER)
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
+  otps          Otp[] // Relasi One-to-Many
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,6 +104,21 @@ model EmailTemplate {
   name      String?   @unique
   subject   String?
   body      String?
+  createdAt DateTime? @default(now())
+  createdBy String?
+  updatedAt DateTime? @updatedAt
+  updatedBy String?
+  deletedAt DateTime?
+  deleteBy  String?
+}
+
+model Otp {
+  id        Int      @id @default(autoincrement())
+  otpCode   String
+  expiresAt DateTime
+  userId    String // Foreign Key dari User ID
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   createdAt DateTime? @default(now())
   createdBy String?
   updatedAt DateTime? @updatedAt

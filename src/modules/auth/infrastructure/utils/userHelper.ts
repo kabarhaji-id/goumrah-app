@@ -14,6 +14,7 @@ export const mapPrismaUserToUsers = (prismaUser: Prisma.UserGetPayload<false> | 
         phone: prismaUser.phone ?? null,
         email: prismaUser.email,
         emailVerified: prismaUser.emailVerified ?? null,
+        token: prismaUser.token ?? null,
         image: prismaUser.image ?? null,
         password: prismaUser.password ?? null,
         role: prismaUser.role as Role,
