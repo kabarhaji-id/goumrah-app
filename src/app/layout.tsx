@@ -4,7 +4,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { LandingProvider } from "@/sections/landing/context/LandingContext";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import ReactQueryProvider from "@/context/ReactQueryProvider";
-import SessionProviderWrapper from "@/context/SessionProvider"; // Import new wrapper
+import AuthProvider from "@/context/AuthProvider";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     subsets: ["latin"],
@@ -29,13 +29,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" className={plusJakartaSans.variable}>
         <body className={plusJakartaSans.variable}>
-        <SessionProviderWrapper> {/* Wrap session provider in a separate client component */}
+        <AuthProvider> {/* Wrap session provider in a separate client component */}
             <ReactQueryProvider>
                 <ThemeProvider>
                     <LandingProvider>{children}</LandingProvider>
                 </ThemeProvider>
             </ReactQueryProvider>
-        </SessionProviderWrapper>
+        </AuthProvider>
         </body>
         </html>
     );

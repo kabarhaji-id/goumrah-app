@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import CheckboxWithLabel from "@/sections/auth/components/molecoles/check-box";
 import InputField from "@/sections/auth/components/molecoles/input-field";
@@ -11,20 +10,27 @@ import { Button } from "@/sections/landing/components/templates/button";
 import LogoDark from "@/public/icons/logo/dark-logo.svg";
 import { z } from "zod";
 import Link from "next/link";
+import {AuthError, InvalidPasswordError, UserNotFoundError} from "@/modules/auth/domain/authExceptions";
+import {AuthService} from "@/modules/auth/application/authService";
+import {saveToken} from "@/modules/auth/infrastructure/utils/sessionUtils";
 
-// ✅ Define Zod schema for validation
+
+
 const loginSchema = z.object({
     identifier: z.string().min(3, "Enter a valid email or phone number"),
     password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const LoginForm: React.FC = () => {
+interface LoginFormProps {
+    onLoading?: (loading: boolean) => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onLoading }) => {
     const [formData, setFormData] = useState({
         identifier: "",
         password: "",
         rememberMe: false,
     });
-
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
@@ -43,7 +49,6 @@ const LoginForm: React.FC = () => {
         }));
     };
 
-    // ✅ Extracted function for validation
     const validateForm = () => {
         try {
             loginSchema.parse(formData);
@@ -58,46 +63,38 @@ const LoginForm: React.FC = () => {
         }
     };
 
-    // ✅ Extracted function for authentication
-    const authenticateUser = async () => {
-        const credentials = {
-            redirect: false,
-            identifier: formData.identifier,
-            password: formData.password,
-        };
-
-        console.log("🔹 Sending credentials:", credentials);
-
-        const result = await signIn("credentials", credentials);
-        console.log("🟡 API Response:", result);
-
-        if (result?.error) {
-            console.error("❌ Login Failed:", result.error);
-            setError(
-                result.error === "CredentialsSignin"
-                    ? "Incorrect email, phone number, or password."
-                    : "Login failed. Please try again."
-            );
-
-            setFormData({
-                identifier: "",
-                password: "",
-                rememberMe: false,
-            });
-        } else {
-            console.log("✅ Login Successful! Redirecting to dashboard...");
-            router.push("/dashboard");
-        }
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null); // Reset error message
+        setError(null);
 
-        if (validateForm()) {
-            await authenticateUser();
+        if (!validateForm()) return;
+
+        if (onLoading) onLoading(true); // ✅ Trigger loading state in parent
+
+        try {
+            const { token, user } = await AuthService.login(formData.identifier, formData.password);
+            console.log("Response:", { token, user });
+            // ✅ Store token and user data in localStorage
+            saveToken(token)
+
+            // ✅ Redirect to Dashboard
+            router.push("/dashboard");
+        } catch (error) {
+            console.log("Error:", error); // Add this line to check the error
+            if (error instanceof UserNotFoundError) {
+                setError("User not found.");
+            } else if (error instanceof InvalidPasswordError) {
+                setError("Invalid password.");
+            } else if (error instanceof AuthError) {
+                setError(error.message);
+            } else {
+                setError("An unexpected error occurred.");
+            }
+        } finally {
+            if (onLoading) onLoading(false); // ✅ Stop loading state in parent
         }
     };
+
 
     return (
         <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md flex flex-col items-center justify-center min-h-[400px]">
@@ -147,10 +144,12 @@ const LoginForm: React.FC = () => {
 
                 <div className="text-base text-center text-slate-800 text-opacity-70">
                     <span>Belum memiliki akun? </span>
-                    <Link href="/auth/register" className="text-indigo-500 cursor-pointer">Daftar disini.</Link>
+                    <Link href="/auth/register" className="text-indigo-500 cursor-pointer">
+                        Daftar disini.
+                    </Link>
                 </div>
 
-                <Divider text="or" />
+                <Divider text="atau" />
 
                 <SocialIcons />
             </form>

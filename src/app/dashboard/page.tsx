@@ -1,35 +1,26 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/shared/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-import {Container} from "@/shared/ui/layout/components/container";
-import {PageWrapper} from "@/shared/ui/layout/page-wrapper";
 
 const Dashboard = () => {
-    const { data: session, status } = useSession();
+    const user = useAuth();
     const router = useRouter();
 
-    console.log("🔹 Session Data:", session);
-    console.log("🔹 Session Status:", status);
+    if (!user) return <p>Loading...</p>;
 
-    useEffect(() => {
-        if (status === "unauthenticated") {
-            console.warn("❌ User not authenticated, redirecting to login...");
-            router.push("/auth/login");
-        }
-    }, [status, router]);
-
-    if (status === "loading") return <p>Loading...</p>;
+    if (user?.role !== "ADMINISTRATOR") {
+        router.push("/forbidden");
+        return null;
+    }
 
     return (
-
-        <PageWrapper>
-            <Container className=" h-full text-center text-2xl">
-                <h1>Welcome to the Dashboard</h1>
-                <p>User: {session?.user?.email || "No email/phone found"}</p>
-            </Container>
-        </PageWrapper>
+        <div>
+            <h1>Welcome to Dashboard, {user.firstName}</h1>
+            <p><strong>Username:</strong> {user.username}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Role:</strong> {user.role}</p>
+        </div>
     );
 };
 
