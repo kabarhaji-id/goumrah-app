@@ -5,15 +5,21 @@ export class OTPRepository {
         await prisma.otp.create({
             data: {
                 userId,
-                otp,
-                expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 🔥 OTP berlaku 10 menit
+                otpCode: otp, // ✅ Gunakan otpCode
+                expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 menit
             },
         });
     }
 
     async verifyOTP(userId: string, otp: string): Promise<boolean> {
         const storedOtp = await prisma.otp.findFirst({
-            where: { userId, otp, expiresAt: { gt: new Date() } },
+            where: {
+                userId,
+                otpCode: otp, // ✅ Gunakan otpCode sesuai schema
+                expiresAt: {
+                    gt: new Date(),
+                },
+            },
         });
 
         return !!storedOtp;

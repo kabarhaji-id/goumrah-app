@@ -2,6 +2,11 @@
 import "@testing-library/jest-dom";
 import { jest } from "@jest/globals";
 
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.test" });
+
+
+
 // ✅ Mock Next.js Router (useful for testing components using `next/navigation`)
 jest.mock("next/navigation", () => ({
     useRouter: () => ({
@@ -84,21 +89,6 @@ jest.mock("@prisma/client", () => {
     return { PrismaClient: jest.fn(() => mockPrisma) };
 });
 
-
-// ✅ Mock NextAuth.js (authentication)
-jest.mock("next-auth/react", () => ({
-    useSession: jest.fn(() => ({
-        data: null,
-        status: "unauthenticated",
-    })),
-    signIn: jest.fn(),
-    signOut: jest.fn(),
-}));
-
-// ✅ Mock JWT (JSON Web Token) for authentication
-jest.mock("next-auth/jwt", () => ({
-    getToken: jest.fn(() => Promise.resolve(null)), // Returns null by default
-}));
 
 // ✅ Suppress console warnings/errors during tests (optional)
 global.console = {
