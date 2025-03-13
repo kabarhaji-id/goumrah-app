@@ -1,6 +1,6 @@
 import { prisma } from "@/shared/libs/prisma";
 import bcrypt from "bcryptjs";
-import { Role } from "@/modules/auth/domain/role";
+import {Role} from "@/modules/auth/domain/role";
 
 export const AuthService = {
     /**
@@ -90,4 +90,29 @@ export const AuthService = {
             throw new Error("Failed to fetch users.");
         }
     },
+
+    /**
+     * Handle User Login
+     * @param identifier (email or username)
+     * @param password string
+     * @returns Token & User
+     */
+    async login(identifier: string, password: string) {
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ identifier, password }),
+        });
+
+        console.log(res);
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "An unexpected error occurred.");
+        }
+
+        return await res.json(); // ✅ Return token and user data
+    }
 };
