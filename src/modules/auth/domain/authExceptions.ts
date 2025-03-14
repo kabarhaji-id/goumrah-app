@@ -5,6 +5,11 @@ export class AuthError extends Error {
     constructor(message: string) {
         super(message);
         this.name = "AuthError";
+
+        // ✅ Remove the stack trace to prevent Next.js from logging the error in console
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, this.constructor);
+        }
     }
 }
 

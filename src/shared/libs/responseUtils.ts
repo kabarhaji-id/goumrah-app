@@ -11,7 +11,7 @@ export function successResponse<T>(code: number, data: T) {
         status: true,
         code,
         data
-    }, { status: code });
+    }, { status: 200 });
 }
 
 /**
@@ -23,7 +23,7 @@ export function successResponse<T>(code: number, data: T) {
 export function errorResponse(code: number, message: string) {
     return NextResponse.json({
         status: false,
-        code,
+        code, // ✅ Return the actual error code here (but not as HTTP status)
         message
-    }, { status: code });
+    }, { status: 200 }); // ✅ Always return HTTP 200
 }

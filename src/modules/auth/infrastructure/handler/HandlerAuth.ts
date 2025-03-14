@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { UsersRepository } from "@/modules/auth/infrastructure/usersRepository";
 import { comparePassword, generateJWTToken, hashPassword, verifyJWTToken } from "@/modules/auth/infrastructure/utils/sessionUtils";
 import { Role } from "@/modules/auth/domain/role";
-import { successResponse } from "@/shared/libs/responseUtils";
+import {errorResponse, successResponse} from "@/shared/libs/responseUtils";
 import { ForgotPasswordService } from "@/modules/auth/application/forgotPasswordService";
 import { OTPRepository } from "@/modules/email/infrastructure/OtpRepository";
 import { MailchimpEmailService } from "@/modules/email/application/emailServiceMailchimp";
@@ -40,29 +40,56 @@ class AuthHandler {
      * @returns {Promise<NextResponse>}
      */
     async login(req: NextRequest): Promise<NextResponse> {
-        const { identifier, password } = await req.json();
-        if (!identifier || !password) throw new ValidationError("Email or password is required.");
+        try {
+            const { identifier, password } = await req.json();
 
-        const field = this.getIdentifierType(identifier);
-        const user = await this.userRepo.getUsersByField(field, identifier);
-        if (!user || !user.password) throw new UserNotFoundError();
+            if (!identifier || !password) {
+                throw new ValidationError("Email or password is required.");
+            }
 
-        const isMatch = await comparePassword(password, user.password);
-        if (!isMatch) throw new InvalidPasswordError();
+            const field = this.getIdentifierType(identifier);
+            const user = await this.userRepo.getUsersByField(field, identifier);
 
-        const token = generateJWTToken(user);
-        await this.userRepo.updateUserToken(user.id, token);
+            if (!user || !user.password) {
+                throw new UserNotFoundError();
+            }
 
-        const response = successResponse(200, { user, token });
-        response.cookies.set("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 60 * 60 * 24 * 7,
-            path: "/",
-        });
+            const isMatch = await comparePassword(password, user.password);
+            if (!isMatch) {
+                throw new InvalidPasswordError();
+            }
 
-        return response;
+            const token = generateJWTToken(user);
+            await this.userRepo.updateUserToken(user.id, token);
+
+            const response = successResponse(200, { user, token });
+            response.cookies.set("token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                maxAge: 60 * 60 * 24 * 7,
+                path: "/",
+            });
+
+            return response;
+
+        } catch (error) {
+            if (error instanceof ValidationError) {
+                return errorResponse(400, error.message);
+            }
+
+            if (error instanceof UserNotFoundError) {
+                return errorResponse(404, "User not found.");
+            }
+
+            if (error instanceof InvalidPasswordError) {
+                return errorResponse(401, "Invalid password.");
+            }
+
+            console.error("Unhandled Error:", error);
+            return errorResponse(500, "Internal Server Error.");
+        }
     }
+
 
     /**
      * Handles user registration.

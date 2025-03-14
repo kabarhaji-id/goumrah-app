@@ -1,6 +1,9 @@
 import { prisma } from "@/shared/libs/prisma";
 import bcrypt from "bcryptjs";
 import {Role} from "@/modules/auth/domain/role";
+import {
+    AuthError
+} from "@/modules/auth/domain/authExceptions";
 
 export const AuthService = {
     /**
@@ -106,13 +109,17 @@ export const AuthService = {
             body: JSON.stringify({ identifier, password }),
         });
 
-        console.log(res);
+        const data = await res.json();
+
+        console.log("🧐 Fetch Response:", data); // Cek response di sini
 
         if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.message || "An unexpected error occurred.");
+            return { error: data?.message || "Unknown Error" };
         }
 
-        return await res.json(); // ✅ Return token and user data
+        // ✅ Akses data yang benar dari API
+        const { token, user } = data?.data || {};
+
+        return { token, user }; // ✅ Return yang benar
     }
 };

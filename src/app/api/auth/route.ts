@@ -1,21 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-    handleForgotPassword, handleGetToken, handleGetUser,
-    handleLogin, handleLogout, handleRegister
-} from "@/modules/auth/infrastructure/handler/HandlerAuth";
 import { errorResponse } from "@/shared/libs/responseUtils";
+import {authHandler} from "@/modules/auth/infrastructure/handler/HandlerAuth";
 
 /**
  * ✅ Object untuk mapping route ke handler yang sesuai.
  * Memudahkan ekspansi API tanpa perlu menambah banyak kode.
  */
 const routeHandlers: Record<string, (req: NextRequest) => Promise<NextResponse>> = {
-    "POST:/api/auth/login": handleLogin,
-    "POST:/api/auth/register": handleRegister,
-    "POST:/api/auth/forgot-password": handleForgotPassword,
-    "POST:/api/auth/logout": handleLogout,
-    "GET:/api/auth/me": handleGetUser,
-    "GET:/api/auth/token": handleGetToken,
+    "POST:/api/auth/login": authHandler.login,
+    "POST:/api/auth/register": authHandler.register,
+    "POST:/api/auth/forgot-password": authHandler.forgotPassword,
+    "POST:/api/auth/logout": authHandler.logout,
+    "GET:/api/auth/me": authHandler.getUser,
+    "GET:/api/auth/token": authHandler.getToken,
 };
 
 /**
@@ -25,9 +22,11 @@ const routeHandlers: Record<string, (req: NextRequest) => Promise<NextResponse>>
  */
 export async function handler(req: NextRequest): Promise<NextResponse> {
     const routeKey = `${req.method}:${req.nextUrl.pathname}`;
+    console.log(routeKey);
     const handler = routeHandlers[routeKey];
 
     if (!handler) {
+        console.log("Route not found");
         return errorResponse(404, "Route not found");
     }
 
