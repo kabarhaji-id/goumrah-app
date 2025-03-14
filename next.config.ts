@@ -1,12 +1,36 @@
 import type { NextConfig } from "next";
-
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 const nextConfig: NextConfig = {
     env: {
         JWT_SECRET: process.env.JWT_SECRET,
+    },
+    async headers() {
+        return [
+            {
+                source: "/api/:path*",
+                headers: [
+                    {
+                        key: "Access-Control-Allow-Credentials",
+                        value: "true",
+                    },
+                    {
+                        key: "Access-Control-Allow-Origin",
+                        value: "*", // Atau ganti dengan domain frontend jika production
+                    },
+                    {
+                        key: "Access-Control-Allow-Methods",
+                        value: "GET, POST, PUT, DELETE, OPTIONS",
+                    },
+                    {
+                        key: "Access-Control-Allow-Headers",
+                        value: "Content-Type, Authorization",
+                    },
+                ],
+            },
+        ];
     },
     trailingSlash: false,
     basePath: "",

@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "clean": "powershell Remove-Item -Recurse -Force .next, node_modules\\.cache && pnpm install",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -14,9 +15,10 @@
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.9",
-    "axios": "^1.8.2",
+    "axios": "^1.8.3",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.4.7",
+    "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "keen-slider": "^6.8.6",
     "lottie-react": "^2.4.1",
@@ -52,6 +54,7 @@
     "@testing-library/react": "^16.2.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.14",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.13.8",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",

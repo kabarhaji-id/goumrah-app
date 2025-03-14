@@ -52,3 +52,4 @@ export async function authMiddleware(
     req.headers.set("user", JSON.stringify(user));
     return NextResponse.next();
 }
+
