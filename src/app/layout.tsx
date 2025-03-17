@@ -4,7 +4,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { LandingProvider } from "@/sections/landing/context/LandingContext";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import ReactQueryProvider from "@/context/ReactQueryProvider";
-import AuthProvider from "@/context/AuthProvider";
+import {AuthProvider} from "@/context/AuthProvider";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     subsets: ["latin"],

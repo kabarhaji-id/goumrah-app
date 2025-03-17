@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import CheckboxWithLabel from "@/sections/auth/components/molecoles/check-box";
 import InputField from "@/sections/auth/components/molecoles/input-field";
@@ -59,7 +58,7 @@ const RegisterForm: React.FC = () => {
                 setError(err.errors[0]?.message || "Invalid input");
             } else {
                 console.error("❌ Unexpected Error:", err);
-                setError("An unexpected error occurred");
+                setError("ssss An unexpected error occurred");
             }
             return false;
         }

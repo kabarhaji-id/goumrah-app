@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { errorResponse } from "@/shared/libs/responseUtils";
-import {authHandler} from "@/modules/auth/infrastructure/handler/HandlerAuth";
+
+import {authRemoteServices} from "@/modules/auth/application/AuthRemoteService";
 
 /**
  * ✅ Object untuk mapping route ke handler yang sesuai.
  * Memudahkan ekspansi API tanpa perlu menambah banyak kode.
  */
 const routeHandlers: Record<string, (req: NextRequest) => Promise<NextResponse>> = {
-    "POST:/api/auth/login": authHandler.login,
-    "POST:/api/auth/register": authHandler.register,
-    "POST:/api/auth/forgot-password": authHandler.forgotPassword,
-    "POST:/api/auth/logout": authHandler.logout,
-    "GET:/api/auth/me": authHandler.getUser,
-    "GET:/api/auth/token": authHandler.getToken,
+    "POST:/api/auth/login": authRemoteServices.login,
+    "POST:/api/auth/register": authRemoteServices.register,
+    "POST:/api/auth/forgot-password": authRemoteServices.forgotPassword,
+    "POST:/api/auth/logout": authRemoteServices.logout,
+    "GET:/api/auth/me": authRemoteServices.getUser,
+    "GET:/api/auth/token": authRemoteServices.getToken,
 };
 
 /**

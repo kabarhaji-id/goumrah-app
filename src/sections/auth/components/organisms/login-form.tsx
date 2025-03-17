@@ -10,11 +10,7 @@ import { Button } from "@/sections/landing/components/templates/button";
 import LogoDark from "@/public/icons/logo/dark-logo.svg";
 import { z } from "zod";
 import Link from "next/link";
-import {AuthError, InvalidPasswordError, UserNotFoundError} from "@/modules/auth/domain/authExceptions";
-import {AuthService} from "@/modules/auth/application/authService";
-import {saveToken} from "@/modules/auth/infrastructure/utils/sessionUtils";
-
-
+import { saveToken } from "@/modules/auth/infrastructure/utils/sessionUtils";
 
 const loginSchema = z.object({
     identifier: z.string().min(3, "Enter a valid email or phone number"),
@@ -40,6 +36,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoading }) => {
             ...prev,
             [name]: value,
         }));
+
+        if (error) {
+            setError(null);
+        }
     };
 
     const handleCheckboxChange = (checked: boolean) => {
@@ -47,6 +47,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoading }) => {
             ...prev,
             rememberMe: checked,
         }));
+        if (error) {
+            setError(null);
+        }
     };
 
     const validateForm = () => {
@@ -67,34 +70,51 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoading }) => {
         e.preventDefault();
         setError(null);
 
-        if (!validateForm()) return;
+        console.log("Form submission started");
 
-        if (onLoading) onLoading(true); // ✅ Trigger loading state in parent
+        if (!validateForm()) {
+            console.log("Form validation failed");
+            return;
+        }
 
         try {
-            const { token, user } = await AuthService.login(formData.identifier, formData.password);
-            console.log("Response:", { token, user });
-            // ✅ Store token and user data in localStorage
-            saveToken(token)
+            console.log("Sending login request...");
 
-            // ✅ Redirect to Dashboard
-            router.push("/dashboard");
-        } catch (error) {
-            console.log("Error:", error); // Add this line to check the error
-            if (error instanceof UserNotFoundError) {
-                setError("User not found.");
-            } else if (error instanceof InvalidPasswordError) {
-                setError("Invalid password.");
-            } else if (error instanceof AuthError) {
-                setError(error.message);
-            } else {
-                setError("An unexpected error occurred.");
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    identifier: formData.identifier,
+                    password: formData.password,
+                }),
+            });
+
+            const jsonResponse = await res.json();
+
+            if (!res.ok) {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error);
+                }
             }
+
+            // ✅ Destructure properly from data object
+            const { user, token } = jsonResponse.data;
+
+            console.log("User Data:", user);
+            console.log("Token:", token); // 🔥 Fixed here
+
+            saveToken(token); // ✅ Save token to cookies
+            localStorage.setItem("user", JSON.stringify(user)); // ✅ Store user data locally
+            router.push("/");
+
+        } catch (error) {
+            console.error("An error occurred during login:", error);
+            setError("Incorrect email or password.");
         } finally {
-            if (onLoading) onLoading(false); // ✅ Stop loading state in parent
+            console.log("Form submission finished");
+            if (onLoading) onLoading(false);
         }
     };
-
 
     return (
         <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md flex flex-col items-center justify-center min-h-[400px]">
@@ -102,7 +122,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoading }) => {
             <h2 className="text-2xl font-semibold text-center">Welcome to Materialize! 👋</h2>
             <p className="text-center text-gray-500 my-6">Please sign in to your account and start the adventure</p>
 
-            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+            {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                 <div className="flex flex-col gap-4">
