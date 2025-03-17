@@ -1,36 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authMiddleware } from "@/shared/middleware/authMiddleware";
-import { applyCORS } from "@/shared/middleware/corsMiddleware";
-import { Role } from "@/modules/auth/domain/role";
-
-const protectedRoutes = ["/dashboard", "/bookings", "/support", "/partners"];
-const excludedRoutes = ["/api/auth/login"];
+import { protectedRoutes, excludedRoutes, allowedRoles } from "@/shared/config/routeConfig";
+import {applySecurityHeaders, rateLimit} from "@/shared/middleware/corsMiddleware";
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
+    // Bypass for excluded routes (e.g., login, register, public API)
     if (excludedRoutes.includes(pathname)) {
         return NextResponse.next();
     }
 
-    if (!protectedRoutes.some((route) => pathname.startsWith(route))) {
+    // Rate Limiting Handler
+    const rateLimitResponse = rateLimit(req);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    // Check if route is protected
+    const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
+    if (!isProtected) {
         return NextResponse.next();
     }
 
-    const allowedRoles = [
-        Role.ADMINISTRATOR,
-        Role.CUSTOMER,
-        Role.PARTNER,
-        Role.CUSTOMER_SUPPORT,
-    ];
-
+    // Auth Middleware for Protected Routes
     const authResponse = await authMiddleware(req, allowedRoles);
-
     if (authResponse.status !== 200) {
         return authResponse;
     }
 
-    return applyCORS(authResponse);
+    const response = applySecurityHeaders(authResponse);
+    return response
 }
 
 export const config = {
@@ -42,3 +40,4 @@ export const config = {
         '/partners/:path*',
     ],
 };
+

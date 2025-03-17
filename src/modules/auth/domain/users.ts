@@ -1,7 +1,7 @@
 import { Role } from "./role";
 
 export interface Users {
-    id: string;
+    userId: number;
     firstName: string | null;
     lastName: string | null;
     username: string | null;
@@ -11,7 +11,7 @@ export interface Users {
     image: string | null;
     password: string | null;
     token: string | null;
-    role: Role;
+    role: Role | Role.REGISTERED_USER;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -1,101 +1,181 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { Users } from "@/modules/auth/domain/users";
+import { SignJWT, jwtVerify, errors } from "jose";
 import bcrypt from "bcryptjs";
+import { Users } from "@/modules/auth/domain/users";
+import { TokenPayload } from "@/modules/auth/domain/authEntity";
+import {
+    UnauthorizedError,
+    TokenExpiredError,
+} from "@/shared/error/GlobalErrorHandler";
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+// Ambil secret key dari .env
+export function getJwtSecretKey() {
+    const secret = process.env.JWT_SECRET;
 
-if (!JWT_SECRET) {
-    throw new Error("JWT_SECRET is not defined in .env file");
+    if (!secret) {
+        throw new Error('JWT Secret key is not set');
+    }
+
+    const enc: Uint8Array = new TextEncoder().encode(secret);
+    return enc;
 }
-const JWT_MAX_AGE: number = 7 * 24 * 60 * 60; // 7 hari
-
 /**
- * Hashes a password using bcrypt.
- * @param password - The plaintext password to hash.
- * @returns A promise that resolves to the hashed password.
+ * ✅ Hash password menggunakan bcrypt
  */
-export async function hashPassword(password: string): Promise<string> {
+export const hashPassword = async (password: string): Promise<string> => {
     return bcrypt.hash(password, 10);
-}
+};
 
 /**
- * Compares a plaintext password with a hashed password.
- * @param password - The plaintext password.
- * @param hashedPassword - The hashed password.
- * @returns A promise that resolves to a boolean indicating if the passwords match.
+ * ✅ Bandingkan password dengan hashed password
  */
-export async function comparePassword(password: string, hashedPassword: string): Promise<boolean> {
+export const comparePassword = async (password: string, hashedPassword: string): Promise<boolean> => {
     return bcrypt.compare(password, hashedPassword);
-}
+};
 
 /**
- * Struktur payload JWT
+ * ✅ Generate JWT Token untuk user
  */
-interface TokenPayload extends JwtPayload {
-    id: string;
-    email: string;
-    username: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    phone: string | null;
-    image: string | null;
-    role: string;
-}
+export const generateJWTToken = async (user: Users): Promise<string> => {
+    const secretKey = getJwtSecretKey();
 
-/**
- * 🔑 Generate JWT Token untuk user
- * @param user - Data pengguna dari database
- * @returns Token JWT dalam bentuk string
- */
-export function generateJWTToken(user: Users): string {
     const payload: TokenPayload = {
-        id: user.id,
+        userId: user.userId,
         email: user.email,
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
-        image: user.image,
         phone: user.phone,
+        image: user.image,
         role: user.role,
     };
 
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_MAX_AGE });
-}
+    return await new SignJWT(payload)
+        .setProtectedHeader({ alg: "HS256" })
+        .setExpirationTime("7d")
+        .sign(secretKey);
+};
 
 /**
- * ✅ Verifikasi Token JWT
- * @param token - Token JWT yang dikirim oleh user
- * @returns TokenPayload jika valid, null jika tidak valid
+ * ✅ Verifikasi JWT Token
  */
-export function verifyJWTToken(token: string): TokenPayload | null {
+export const verifyJWTToken = async (token: string): Promise<TokenPayload | null> => {
+    const secretKey = getJwtSecretKey();
+
     try {
-        return jwt.verify(token, JWT_SECRET) as TokenPayload;
-    } catch (error) {
-        console.error("JWT Verification Error:", error); // ✅ Menggunakan error
+        const { payload } = await jwtVerify(token, secretKey, {
+            algorithms: ['HS256'],
+        });
+
+        return payload as TokenPayload;
+    } catch (error: unknown) {
+        if (error instanceof errors.JWTExpired) {
+            throw new TokenExpiredError('Token has expired.');
+        }
+
+        if (error instanceof errors.JWSSignatureVerificationFailed) {
+            throw new UnauthorizedError('Invalid token signature.');
+        }
+
+        console.error('Unexpected error while verifying token:', error);
+        throw new Error('Error verifying token.');
+    }
+};
+
+/**
+ * ✅ Refresh token jika hampir expired
+ */
+export const refreshTokenIfNeeded = async (token: string): Promise<string | null> => {
+    const payload = await verifyJWTToken(token);
+
+    if (!payload) return null;
+
+    const now = Math.floor(Date.now() / 1000);
+    const exp = payload.exp || 0;
+
+    const isAboutToExpire = exp - now < 3600;
+
+    if (isAboutToExpire) {
+        console.log("🔄 Refreshing token...");
+
+        return await generateJWTToken({
+            ...payload,
+            emailVerified: null,
+            password: null,
+            token: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+    }
+
+    return token;
+};
+
+/**
+ * Ambil token dari localStorage atau cookies
+ */
+export const getTokenFromCookies = (): string | null => {
+    const cookies = document.cookie.split("; ");
+    const tokenCookie = cookies.find((row) => row.startsWith("token="));
+
+    console.log("[sessionUtils] All Cookies:", document.cookie); // ✅ Log all cookies
+    console.log("[sessionUtils] Token Cookie:", tokenCookie); // ✅ Log the token row
+
+    if (!tokenCookie) {
+        console.warn("[sessionUtils] No token found in cookies.");
         return null;
     }
-}
 
+    const token = tokenCookie.split("=")[1];
+    console.log("[sessionUtils] Extracted Token:", token); // ✅ Log the final token
 
-const TOKEN_KEY = "accessToken";
-
-/**
- * ✅ Save token to local storage
- */
-export const saveToken = (token: string) => {
-    localStorage.setItem(TOKEN_KEY, token);
+    return token || null;
 };
 
 /**
- * ✅ Get token from local storage
+ * Simpan token ke cookies
  */
-export const getToken = (): string | null => {
-    return localStorage.getItem(TOKEN_KEY);
+export const saveToken = (token: string): void => {
+    document.cookie = `token=${token}; path=/; Secure=${process.env.NODE_ENV === 'production'}; httpOnly:true; SameSite=Strict;`;
 };
 
 /**
- * ✅ Remove token (Logout)
+ * Hapus token dari cookies saat logout
  */
-export const removeToken = () => {
-    localStorage.removeItem(TOKEN_KEY);
+export const removeToken = (): void => {
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+};
+
+/**
+ * Ambil data user dari cookies yang di-inject oleh middleware
+ */
+export const getUserFromCookies = (): Users | null => {
+    const userData = localStorage.getItem("user");
+
+    if (!userData) {
+        console.warn("[sessionUtils] No user data found in LocalStorage.");
+        return null;
+    }
+
+    try {
+        return JSON.parse(userData) as Users;
+    } catch (error) {
+        console.error("[sessionUtils] Error parsing user data:", error);
+        return null;
+    }
+};
+
+/**
+ * Hapus user dari cookies saat logout
+ */
+/**
+ * Hapus user dari cookies saat logout
+ */
+export const removeUserFromCookies = (): boolean => {
+    try {
+        localStorage.removeItem("user");
+        return true; // Successfully removed
+    } catch (error) {
+        console.error("[sessionUtils] Failed to remove user from LocalStorage:", error);
+        return false; // Failed to remove
+    }
 };

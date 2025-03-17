@@ -1,55 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyJWTToken } from "@/modules/auth/infrastructure/utils/sessionUtils";
-import { UsersRepository } from "@/modules/auth/infrastructure/usersRepository";
 import { errorResponse } from "@/shared/libs/responseUtils";
-import { Role } from "@/modules/auth/domain/role";
+import { extractToken, verifyToken, getUserFromDB, validateRole, injectUserIntoRequest } from "@/modules/auth/infrastructure/utils/authHelper";
+import { TokenPayload } from "@/modules/auth/domain/authEntity";
+import { Users } from "@/modules/auth/domain/users";
+import { Role } from "@/modules/auth/domain/role"; // ✅ Import Role di sini
 
-const usersRepository = new UsersRepository();
+export async function authMiddleware(req: NextRequest, allowedRoles: Role[]): Promise<NextResponse> {
+    try {
+        const token = extractToken(req);
+        if (!token) {
+            return errorResponse(401, "Unauthorized: Token not provided.");
+        }
 
-/**
- * Middleware untuk otorisasi pengguna berdasarkan role.
- */
-export async function authMiddleware(
-    req: NextRequest,
-    allowedRoles: Role[]
-): Promise<NextResponse> {
-    const token = req.headers.get("Authorization")?.split(" ")[1];
+        const decodedUser: TokenPayload | null = await verifyToken(token);
 
-    if (!token) {
-        return errorResponse(401, "Unauthorized: Token not provided.");
+        if (!decodedUser) {
+            return errorResponse(403, "Unauthorized: Invalid Token.");
+        }
+
+        const userInDB: Users | null = await getUserFromDB(decodedUser.userId, token);
+        if (!userInDB) {
+            return errorResponse(403, "Unauthorized: Token has expired.");
+        }
+
+        const hasValidRole: boolean = validateRole(userInDB, allowedRoles);
+        if (!hasValidRole) {
+            return errorResponse(403, "Forbidden: Insufficient Role.");
+        }
+
+        return injectUserIntoRequest(req, userInDB);
+    } catch (error) {
+        console.error("❌ Error in authMiddleware:", error);
+        return errorResponse(500, "Internal Server Error.");
     }
-
-    const user = verifyJWTToken(token);
-    if (!user) {
-        return errorResponse(403, "Invalid or Expired Token.");
-    }
-
-    const identifier = user?.email || user?.phone || user?.username;
-
-    if (!identifier) {
-        return errorResponse(401, "Unauthorized: Invalid Token.");
-    }
-
-    let field: "email" | "phone" | "username";
-    if (user.email) field = "email";
-    else if (user.phone) field = "phone";
-    else field = "username";
-
-    const userInDB = await usersRepository.getUsersByField(field, identifier);
-
-    if (!userInDB || !userInDB.token) {
-        return errorResponse(403, "Invalid or Expired Token.");
-    }
-
-    if (userInDB.token !== token) {
-        return errorResponse(403, "Invalid Token.");
-    }
-
-    if (!allowedRoles.includes(userInDB.role as Role)) {
-        return errorResponse(403, "Forbidden: Insufficient Role.");
-    }
-
-    req.headers.set("user", JSON.stringify(user));
-    return NextResponse.next();
 }
-

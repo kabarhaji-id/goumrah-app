@@ -1,69 +1,57 @@
 "use client";
 
-import { createContext, useState, useContext, useEffect, useCallback } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { AuthUser } from "@/modules/auth/domain/users";
+import { createContext, useState, useEffect, useCallback } from "react";
+import { Users } from "@/modules/auth/domain/users";
+import {
+    getUserFromCookies, removeToken, removeUserFromCookies,
+    saveToken,
+} from "@/modules/auth/infrastructure/utils/sessionUtils";
 
 interface AuthContextType {
-    user: AuthUser | null;
-    login: (data: LoginCredentials) => Promise<void>;
+    user: Users | null;
+    login: (token: string) => void;
     logout: () => void;
+    checkAuth: () => void;
 }
 
-interface LoginCredentials {
-    identifier: string;
-    password: string;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<AuthUser | null>(null);
+    const [user, setUser] = useState<Users | null>(null);
 
-    const login = async (data: LoginCredentials) => {
-        const response = await axios.post("/api/auth/login", data);
-        const { token, user } = response.data;
+    console.log("🔥 [AuthProvider] Current User:", user);
 
-        Cookies.set("token", token, { expires: 7 });
-        setUser(user);
-    };
+    const checkAuth = useCallback(() => {
+        const userInCookies = getUserFromCookies();
 
-    const logout = useCallback(async () => {
-        Cookies.remove("token");
-        setUser(null);
-        try {
-            await axios.post("/api/auth/logout");
-        } catch (error) {
-            console.error("Logout failed:", error);
+        console.log("🔥 [AuthProvider] Current User In Cookie:", userInCookies);
+        if (userInCookies) {
+            console.log("✅ [AuthProvider] Authenticated user:", userInCookies);
+            setUser(userInCookies);
+        } else {
+            console.warn("❌ [AuthProvider] No user found. Logging out...");
+            logout();
         }
     }, []);
 
-    const checkAuth = useCallback(async () => {
-        const token = Cookies.get("token");
-        if (!token) return;
+    const login = (token: string) => {
+        saveToken(token);
+        checkAuth();
+    };
 
-        try {
-            const response = await axios.get("/api/auth/me");
-            setUser(response.data.user);
-        } catch {
-            await logout(); // Handle expired token
-        }
-    }, [logout]);
+    const logout = () => {
+        removeToken();
+        removeUserFromCookies();
+        setUser(null);
+    };
 
     useEffect(() => {
-        void checkAuth();
+        checkAuth(); // ✅ Cek user saat page reload
     }, [checkAuth]);
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, checkAuth }}>
             {children}
         </AuthContext.Provider>
     );
-};
-
-export const useAuth = (): AuthContextType => {
-    const context = useContext(AuthContext);
-    if (!context) throw new Error("useAuth must be used within AuthProvider");
-    return context;
 };
