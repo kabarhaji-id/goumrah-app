@@ -12,6 +12,7 @@ export function useLanding() {
             try {
                 const response = await fetch("/api/landing", {cache: "no-store"});
                 if (!response.ok) {
+
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
