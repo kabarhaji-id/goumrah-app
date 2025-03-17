@@ -1,0 +1,29 @@
+export const ErrorCode = {
+    DATABASE_ERROR: 1000,
+    VALIDATION_ERROR: 1001,
+    AUTHENTICATION_ERROR: 1002,
+    AUTHORIZATION_ERROR: 1003,
+    SERVICE_ERROR: 1004,
+    RATE_LIMIT_ERROR: 1005,
+    EXTERNAL_API_ERROR: 1006,
+    PARSING_ERROR: 1007,
+    CACHE_ERROR: 1008,
+    FILE_PROCESSING_ERROR: 1009,
+    TOKEN_EXPIRED: 1010,
+    DUPLICATE_ENTRY: 1011,
+    CONCURRENCY_ERROR: 1012,
+    UNSUPPORTED_MEDIA_TYPE: 1013,
+
+    // ✅ RBAC & User-Specific Errors
+    USER_NOT_FOUND: 2001,
+    ROLE_NOT_ALLOWED: 2002,
+    PASSWORD_INVALID: 2003,
+    TOKEN_INVALID: 2004,
+    PERMISSION_DENIED: 2005,
+
+    // ✅ Internal Service Error
+    INTERNAL_SERVICE_ERROR: 5000,
+} as const;
+
+// ✅ Properly infer all values as a union type
+export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
