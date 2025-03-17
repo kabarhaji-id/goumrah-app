@@ -5,46 +5,44 @@ import { jest } from "@jest/globals";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env.test" });
 
-
-
 // ✅ Mock Next.js Router (useful for testing components using `next/navigation`)
 jest.mock("next/navigation", () => ({
     useRouter: () => ({
-        push: jest.fn(),
-        replace: jest.fn(),
+        push: jest.fn() as jest.Mock,
+        replace: jest.fn() as jest.Mock,
         pathname: "/",
         query: {},
         asPath: "/",
     }),
 }));
 
+// ✅ Mock bcryptjs for password hashing & comparing
 jest.mock("bcryptjs", () => ({
-    hash: jest.fn(),
-    compareSync: jest.fn(),
+    hash: jest.fn() as jest.Mock,
+    compareSync: jest.fn() as jest.Mock,
 }));
-
-
 
 // ✅ Mock Next.js App Router API (e.g., `NextResponse` and `NextRequest`)
 jest.mock("next/server", () => {
-    class MockNextResponse {
+    type HeadersInit = Record<string, string>;
+
+    class MockNextResponse<T> {
         status: number;
         headers: Headers;
-        body: any;
+        body: T;
 
-        constructor(body: any, init: { status?: number; headers?: Record<string, string> } = {}) {
+        constructor(body: T, init: { status?: number; headers?: HeadersInit } = {}) {
             this.body = body;
             this.status = init.status || 200;
-            this.headers = new Headers(init.headers); // ✅ Properly set headers
+            this.headers = new Headers(init.headers);
         }
 
-
-        async json() {
-            return this.body; // ✅ Return as object (not string)
+        async json(): Promise<T> {
+            return this.body;
         }
 
-        static json(data: any, init?: { status: number }) {
-            return new MockNextResponse(data, init); // ✅ No JSON.stringify()
+        static json<T>(data: T, init?: { status: number }): MockNextResponse<T> {
+            return new MockNextResponse<T>(data, init);
         }
     }
 
@@ -53,9 +51,6 @@ jest.mock("next/server", () => {
         NextRequest: jest.fn(),
     };
 });
-
-
-
 
 // ✅ Mock `next-seo` to prevent unnecessary errors in tests
 jest.mock("next-seo", () => ({
@@ -70,8 +65,8 @@ jest.mock("nextjs-google-analytics", () => ({
 // ✅ Mock Facebook Pixel (to prevent errors in tests)
 jest.mock("react-facebook-pixel", () => ({
     default: {
-        init: jest.fn(),
-        pageView: jest.fn(),
+        init: jest.fn() as jest.Mock,
+        pageView: jest.fn() as jest.Mock,
     },
 }));
 
@@ -79,16 +74,16 @@ jest.mock("react-facebook-pixel", () => ({
 jest.mock("@prisma/client", () => {
     const mockPrisma = {
         user: {
-            findUnique: jest.fn(),   // Read one
-            findMany: jest.fn(),     // Read all
-            create: jest.fn(),       // Create
-            update: jest.fn(),       // Update
-            delete: jest.fn(),       // Delete
+            findUnique: jest.fn(),
+            findMany: jest.fn(),
+            create: jest.fn(),
+            update: jest.fn(),
+            delete: jest.fn(),
         },
     };
+
     return { PrismaClient: jest.fn(() => mockPrisma) };
 });
-
 
 // ✅ Suppress console warnings/errors during tests (optional)
 global.console = {

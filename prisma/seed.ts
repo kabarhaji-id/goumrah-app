@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
-import { prisma } from "@/shared/libs/prisma";
-import { Role } from "@/modules/auth/domain/role";
+import { PrismaClient, Role } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 async function main() {
     console.log("🌱 Seeding database...");
@@ -11,7 +12,6 @@ async function main() {
     // List of users with different roles
     const users = [
         {
-            id: "user-123",
             firstName: "John",
             lastName: "Doe",
             username: "johndoe",
@@ -21,7 +21,6 @@ async function main() {
             role: Role.REGISTERED_USER,
         },
         {
-            id: "user-124",
             firstName: "Jane",
             lastName: "Smith",
             username: "janesmith",
@@ -31,7 +30,6 @@ async function main() {
             role: Role.CUSTOMER,
         },
         {
-            id: "user-125",
             firstName: "Michael",
             lastName: "Johnson",
             username: "michaeljohnson",
@@ -41,7 +39,6 @@ async function main() {
             role: Role.TRAVEL_AGENT,
         },
         {
-            id: "user-126",
             firstName: "Emily",
             lastName: "Williams",
             username: "emilywilliams",
@@ -51,7 +48,6 @@ async function main() {
             role: Role.ADMINISTRATOR,
         },
         {
-            id: "user-127",
             firstName: "David",
             lastName: "Brown",
             username: "davidbrown",
@@ -61,7 +57,6 @@ async function main() {
             role: Role.CUSTOMER_SUPPORT,
         },
         {
-            id: "user-128",
             firstName: "Sophia",
             lastName: "Taylor",
             username: "sophiataylor",
@@ -79,7 +74,7 @@ async function main() {
             update: {},
             create: {
                 ...user,
-                emailVerified: null, // Bisa diubah jika ingin diverifikasi otomatis
+                emailVerified: null,
                 image: null,
                 token: null,
                 createdAt: new Date(),
