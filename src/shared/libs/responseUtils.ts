@@ -20,7 +20,7 @@ export function successResponse<T>(code: number, data: T) {
  * @param message - Pesan error yang akan dikirimkan.
  * @returns NextResponse JSON
  */
-export function errorResponse(code: number, message: string) {
+export function errorResponse<T>(code: number, message: T) {
     return NextResponse.json({
         status: false,
         code, // ✅ Return the actual error code here (but not as HTTP status)

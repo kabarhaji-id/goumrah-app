@@ -1,7 +1,7 @@
 import { prisma } from "@/shared/libs/prisma";
 
 export class OTPRepository {
-    async saveOTP(userId: string, otp: string): Promise<void> {
+    async saveOTP(userId: number, otp: string): Promise<void> {
         await prisma.otp.create({
             data: {
                 userId,
@@ -11,7 +11,7 @@ export class OTPRepository {
         });
     }
 
-    async verifyOTP(userId: string, otp: string): Promise<boolean> {
+    async verifyOTP(userId: number, otp: string): Promise<boolean> {
         const storedOtp = await prisma.otp.findFirst({
             where: {
                 userId,
