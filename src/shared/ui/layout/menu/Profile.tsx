@@ -1,14 +1,19 @@
 import React from "react";
 import { LuUser, LuLogOut, LuPackage, LuGauge, LuPanelTop, LuHeadphones, LuChartColumn } from "react-icons/lu";
-import {Role} from "@/modules/auth/domain/role";
-
+import { Role } from "@/modules/auth/domain/role";
+import { useScreenType } from "@/shared/libs/useScreenTypes";
+import Avatar from "@/shared/ui/layout/menu/Avatar";
+import {Users} from "@/modules/auth/domain/users";
 
 interface ProfileMenuProps {
     role: Role;
     handleLogout: () => void;
+    user: Users;
 }
 
-const ProfileMenu: React.FC<ProfileMenuProps> = ({ role, handleLogout }) => {
+const ProfileMenu: React.FC<ProfileMenuProps> = ({ role, handleLogout, user }) => {
+    const screenType = useScreenType();
+
     const getMenuItems = () => {
         switch (role) {
             case Role.REGISTERED_USER:
@@ -54,6 +59,20 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ role, handleLogout }) => {
 
     return (
         <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50">
+            {/* ✅ Menampilkan Avatar & Nama hanya pada tablet & mobile */}
+            {(screenType === "mobile" || screenType === "tablet") && (
+                <div >
+
+                    <div className="flex items-center gap-2 p-3 w-full text-left">
+                        <Avatar imageUrl={user?.image || "/assets/image/default-avatar.jpg"} />
+                        <span className="text-sm font-medium ">
+                        {user?.firstName} {user?.lastName}
+                        </span>
+                    </div>
+                    <hr />
+                </div>
+            )}
+
             {menuItems.map((item, index) => (
                 <div key={index}>
                     {item.path ? (
@@ -69,6 +88,8 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ role, handleLogout }) => {
                     )}
                 </div>
             ))}
+
+
         </div>
     );
 };
